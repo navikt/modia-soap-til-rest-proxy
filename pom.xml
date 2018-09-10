@@ -5,10 +5,24 @@
     <artifactId>modia-soap-til-rest-proxy</artifactId>
     <packaging>jar</packaging>
     <version>1.0-SNAPSHOT</version>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
     <name>modia-soap-til-rest-proxy</name>
     <url>http://maven.apache.org</url>
 
     <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
         <henvendelse.arkivering.aktivitet.version>2.0.0</henvendelse.arkivering.aktivitet.version>
         <henvendelse.arkivering.informasjon.version>2.0.0</henvendelse.arkivering.informasjon.version>
     </properties>
@@ -31,6 +45,12 @@
             <groupId>no.nav.sbl.dialogarena</groupId>
             <artifactId>henvendelse-arkivering-informasjon</artifactId>
             <version>${henvendelse.arkivering.informasjon.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.5</version>
         </dependency>
     </dependencies>
 
