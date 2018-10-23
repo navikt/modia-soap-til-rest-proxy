@@ -53,12 +53,6 @@
             <version>${henvendelse.arkivering.informasjon.version}</version>
         </dependency>
 
-        <!--<dependency>-->
-            <!--<groupId>com.nimbusds</groupId>-->
-            <!--<artifactId>oauth2-oidc-sdk</artifactId>-->
-            <!--<version>${oauth2-oidc-sdk.version}</version>-->
-        <!--</dependency>-->
-
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
@@ -68,10 +62,6 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -85,21 +75,22 @@
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-launcher</artifactId>
         </dependency>
-
-
-        <!-- javax/spring -->
-        <!--<dependency>-->
-            <!--<groupId>javax.inject</groupId>-->
-            <!--<artifactId>javax.inject</artifactId>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>no.nav.sbl</groupId>-->
-            <!--<artifactId>util</artifactId>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>no.nav.sbl.dialogarena</groupId>-->
-            <!--<artifactId>common-cxf</artifactId>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.opensaml</groupId>
+            <artifactId>opensaml-saml-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.wss4j</groupId>
+            <artifactId>wss4j-ws-security-common</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>no.nav.sbl</groupId>
@@ -123,9 +114,6 @@
             <groupId>no.nav.sbl.dialogarena</groupId>
             <artifactId>common-jetty</artifactId>
         </dependency>
-
-
-
 
         <dependency>
             <groupId>com.google.code.gson</groupId>
