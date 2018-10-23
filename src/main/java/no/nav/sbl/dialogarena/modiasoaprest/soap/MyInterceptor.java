@@ -56,7 +56,9 @@ public class MyInterceptor extends AbstractPhaseInterceptor<Message>{
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
             String auth = "srvModiabrukerdialog:<pw>";
+
             String encodedAuth = "Basic <auth>";
             headers.set("Authorization", encodedAuth);
 

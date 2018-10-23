@@ -13,7 +13,7 @@ import java.util.Base64;
 public class TokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
-
+        
         String samlToken = "<token>";
         java.util.Base64.getUrlEncoder().withoutPadding().encodeToString(samlToken.getBytes());
         //   System.out.println(httpServletRequest);
