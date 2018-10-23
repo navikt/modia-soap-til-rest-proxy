@@ -5,37 +5,43 @@
     <artifactId>modia-soap-til-rest-proxy</artifactId>
     <packaging>jar</packaging>
     <version>1.0-SNAPSHOT</version>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>8</source>
-                    <target>8</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+
     <name>modia-soap-til-rest-proxy</name>
-    <url>http://maven.apache.org</url>
+
+    <parent>
+        <groupId>no.nav.sbl</groupId>
+        <artifactId>mor-pom</artifactId>
+        <version>2018.04.06.10.32</version>
+    </parent>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <henvendelse.arkivering.aktivitet.version>2.0.0</henvendelse.arkivering.aktivitet.version>
         <henvendelse.arkivering.informasjon.version>2.0.0</henvendelse.arkivering.informasjon.version>
+
+        <joda-time.version>2.2</joda-time.version>
+        <oauth2-oidc-sdk.version>5.17.1</oauth2-oidc-sdk.version>
     </properties>
 
+    <build>
+        <finalName>${project.artifactId}</finalName>
+    </build>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>no.nav.sbl</groupId>
+                <artifactId>bom</artifactId>
+                <version>2018.04.06.10.32</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.11</version>
-            <scope>test</scope>
-        </dependency>
-
+        <!--eksterne tjenester-->
         <dependency>
             <groupId>no.nav.sbl.dialogarena</groupId>
             <artifactId>henvendelse-arkivering-aktivitet</artifactId>
@@ -47,11 +53,86 @@
             <version>${henvendelse.arkivering.informasjon.version}</version>
         </dependency>
 
+        <!--<dependency>-->
+            <!--<groupId>com.nimbusds</groupId>-->
+            <!--<artifactId>oauth2-oidc-sdk</artifactId>-->
+            <!--<version>${oauth2-oidc-sdk.version}</version>-->
+        <!--</dependency>-->
+
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>${joda-time.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-launcher</artifactId>
+        </dependency>
+
+
+        <!-- javax/spring -->
+        <!--<dependency>-->
+            <!--<groupId>javax.inject</groupId>-->
+            <!--<artifactId>javax.inject</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>no.nav.sbl</groupId>-->
+            <!--<artifactId>util</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>no.nav.sbl.dialogarena</groupId>-->
+            <!--<artifactId>common-cxf</artifactId>-->
+        <!--</dependency>-->
+
+        <dependency>
+            <groupId>no.nav.sbl</groupId>
+            <artifactId>api-app</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>no.nav.sbl.dialogarena</groupId>
+            <artifactId>test-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>no.nav.sbl.dialogarena</groupId>
+            <artifactId>common-jetty</artifactId>
+        </dependency>
+
+
+
+
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.8.5</version>
         </dependency>
     </dependencies>
+
 
 </project>

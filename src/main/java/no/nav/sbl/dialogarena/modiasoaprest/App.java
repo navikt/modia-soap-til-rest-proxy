@@ -1,4 +1,4 @@
-package no.nav.sbl.dialogarena;
+package no.nav.sbl.dialogarena.modiasoaprest;
 
 /**
  * Hello world!
