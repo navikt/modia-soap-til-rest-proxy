@@ -18,7 +18,7 @@ public class BehandleHenvendelseWs implements ArkiverHenvendelseBehandlingV2 {
     }
 
     @Override
-    public void settUtgaarDato(String s, DateTime dateTime) {
+    public void settUtgaarDato(String arkivpostId, DateTime dateTime) {
 
     }
 

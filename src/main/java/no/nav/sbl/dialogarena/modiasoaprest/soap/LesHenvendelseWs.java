@@ -14,6 +14,8 @@ import org.apache.cxf.phase.PhaseInterceptorChain;
 import org.apache.cxf.security.SecurityContext;
 import org.apache.wss4j.common.principal.SAMLTokenPrincipal;
 import org.opensaml.saml.saml2.core.Assertion;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -21,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.xml.transform.Transformer;
@@ -35,7 +38,6 @@ import java.util.List;
 @Service
 @SoapTjeneste("/ArkivertHenvendelseV2")
 public class LesHenvendelseWs implements ArkivertHenvendelseV2 {
-
     public static final String BASIC_AUTH_SEPERATOR = ":";
     public static final String SECURITY_TOKEN_SERVICE_URL = "https" + BASIC_AUTH_SEPERATOR + "//security-token-service.nais.preprod.local/rest/v1/sts/token/exchange";
     public static final String GRANT_TYPE_PARAM = "urn" + BASIC_AUTH_SEPERATOR + "ietf:params:oauth:grant-type:token-exchange";
@@ -44,17 +46,19 @@ public class LesHenvendelseWs implements ArkivertHenvendelseV2 {
     public static final String MODIASOAPRESTPROXY_SYSTEM_USER = "srvmodiasoaprestpr";
     public static final String MODIASOAPRESTPROXY_SYSTEM_USER_PASSWORD = System.getProperty("no.nav.modig.security.systemuser.password");
 
+    private Logger logger = LoggerFactory.getLogger(LesHenvendelseWs.class);
+
     @Override
     public void ping() {
     }
 
     @Override
-    public List<Arkivpost> hentArkiverteHenvendelser(String s, Filter filter) {
+    public List<Arkivpost> hentArkiverteHenvendelser(String aktorId, Filter filter) {
         return null;
     }
 
     @Override
-    public List<ArkivpostTemagruppe> hentArkiverteTemagrupper(String s) {
+    public List<ArkivpostTemagruppe> hentArkiverteTemagrupper(String aktorId) {
         return null;
     }
 
@@ -76,6 +80,10 @@ public class LesHenvendelseWs implements ArkivertHenvendelseV2 {
         JsonParser jsonParser = new JsonParser();
         JsonElement jsonResponse = jsonParser.parse(tokenResponse.getBody());
         JsonElement oidcToken = jsonResponse.getAsJsonObject().get("access_token");
+
+        if(oidcToken == null || oidcToken.getAsString().isEmpty()) {
+            throw new RuntimeException("Har ikke fått OIDC-token, OIDC-token er: "+ oidcToken);
+        }
 
         return oidcToken.getAsString();
     }
@@ -99,7 +107,13 @@ public class LesHenvendelseWs implements ArkivertHenvendelseV2 {
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
 
-        return restTemplate.postForEntity(SECURITY_TOKEN_SERVICE_URL, request, String.class);
+        ResponseEntity<String> tokenResponse = null;
+        try {
+            tokenResponse = restTemplate.postForEntity(SECURITY_TOKEN_SERVICE_URL, request, String.class);
+        } catch (RestClientException e) {
+            throw new RuntimeException("Feilet i henting av OIDC-token", e);
+        }
+        return tokenResponse;
     }
 
     private String getSamlAssertion(Message currentMessage) {
@@ -127,7 +141,12 @@ public class LesHenvendelseWs implements ArkivertHenvendelseV2 {
 
         headers.set("Authorization", "Bearer " + oidcToken);
 
-        ResponseEntity<String> arkivPost = restTemplate.getForEntity("http" + BASIC_AUTH_SEPERATOR + "//localhost:7070/isAlive?id=" + arkivpostId, String.class);
+        ResponseEntity<String> arkivPost = null;
+        try {
+            arkivPost = restTemplate.getForEntity("http://localhost:7070/isAlive?id=" + arkivpostId, String.class);
+        } catch (RestClientException e) {
+            throw new RuntimeException("Feilet i henting av arkivpost", e);
+        }
 
         JsonParser parser = new JsonParser();
         JsonObject o = parser.parse(arkivPost.toString()).getAsJsonObject();
@@ -136,7 +155,6 @@ public class LesHenvendelseWs implements ArkivertHenvendelseV2 {
         return mapper.mapToArkivpost(o);
     }
 
-
     private String getSamlAssertionAsString(Assertion assertion) throws TransformerException {
         StringWriter writer = new StringWriter();
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -144,6 +162,4 @@ public class LesHenvendelseWs implements ArkivertHenvendelseV2 {
         transformer.transform(new DOMSource(assertion.getDOM()), new StreamResult(writer));
         return writer.toString();
     }
-
-
 }

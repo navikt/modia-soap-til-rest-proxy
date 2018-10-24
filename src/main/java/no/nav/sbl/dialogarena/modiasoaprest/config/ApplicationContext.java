@@ -10,7 +10,6 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @ComponentScan("no.nav.sbl.dialogarena.modiasoaprest")
 public class ApplicationContext implements ApiApplication {
 
-
     @Override
     public String getApplicationName() {
         return "modia-soap-rest-proxy";

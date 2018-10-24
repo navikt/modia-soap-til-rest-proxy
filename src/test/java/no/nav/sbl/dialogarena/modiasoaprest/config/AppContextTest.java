@@ -7,6 +7,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static java.lang.System.setProperty;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {ApplicationContext.class})
@@ -20,5 +21,6 @@ public class AppContextTest {
 
     @Test
     public void skalStarteAppContext() {
+        assertEquals(true, true);
     }
 }
