@@ -9,10 +9,8 @@ import no.nav.tjeneste.domene.brukerdialog.arkiverthenvendelse.v2.informasjon.Ar
 import no.nav.tjeneste.domene.brukerdialog.arkivtjenester.v2.typer.Arkivpost;
 import no.nav.tjeneste.domene.brukerdialog.arkivtjenester.v2.typer.ArkivpostTemagruppe;
 import no.nav.tjeneste.domene.brukerdialog.arkivtjenester.v2.typer.Filter;
-import org.apache.cxf.interceptor.InInterceptors;
 import org.apache.cxf.message.Message;
 import org.apache.cxf.phase.PhaseInterceptorChain;
-import org.apache.cxf.rt.security.saml.claims.SAMLSecurityContext;
 import org.apache.cxf.security.SecurityContext;
 import org.apache.wss4j.common.principal.SAMLTokenPrincipal;
 import org.opensaml.saml.saml2.core.Assertion;
@@ -38,10 +36,13 @@ import java.util.List;
 @SoapTjeneste("/ArkivertHenvendelseV2")
 public class LesHenvendelseWs implements ArkivertHenvendelseV2 {
 
-    public static final String SECURITY_TOKEN_SERVICE_URL = "https://security-token-service.nais.preprod.local/rest/v1/sts/token/exchange";
-    public static final String GRANT_TYPE_PARAM = "urn:ietf:params:oauth:grant-type:token-exchange";
-    public static final String REQUESTED_TOKEN_TYPE_PARAM = "urn:ietf:params:oauth:token-type:access_token";
-    public static final String SUBJECT_TOKEN_TYPE_PARAM = "urn:ietf:params:oauth:token-type:saml2";
+    public static final String BASIC_AUTH_SEPERATOR = ":";
+    public static final String SECURITY_TOKEN_SERVICE_URL = "https" + BASIC_AUTH_SEPERATOR + "//security-token-service.nais.preprod.local/rest/v1/sts/token/exchange";
+    public static final String GRANT_TYPE_PARAM = "urn" + BASIC_AUTH_SEPERATOR + "ietf:params:oauth:grant-type:token-exchange";
+    public static final String REQUESTED_TOKEN_TYPE_PARAM = "urn" + BASIC_AUTH_SEPERATOR + "ietf:params:oauth:token-type:access_token";
+    public static final String SUBJECT_TOKEN_TYPE_PARAM = "urn" + BASIC_AUTH_SEPERATOR + "ietf:params:oauth:token-type:saml2";
+    public static final String MODIASOAPRESTPROXY_SYSTEM_USER = "srvmodiasoaprestpr";
+    public static final String MODIASOAPRESTPROXY_SYSTEM_USER_PASSWORD = System.getProperty("no.nav.modig.security.systemuser.password");
 
     @Override
     public void ping() {
@@ -85,11 +86,9 @@ public class LesHenvendelseWs implements ArkivertHenvendelseV2 {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
-        //TODO: credentials
-        String auth = "srvModiabrukerdialog:<pw>";
+        String auth = MODIASOAPRESTPROXY_SYSTEM_USER + BASIC_AUTH_SEPERATOR + MODIASOAPRESTPROXY_SYSTEM_USER_PASSWORD;
 
-        //TODO: generate from credentials
-        String encodedAuth = "Basic " + "base64-token";
+        String encodedAuth = "Basic " + Base64.getEncoder().encodeToString(auth.getBytes());
         headers.set("Authorization", encodedAuth);
 
         MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
@@ -128,7 +127,7 @@ public class LesHenvendelseWs implements ArkivertHenvendelseV2 {
 
         headers.set("Authorization", "Bearer " + oidcToken);
 
-        ResponseEntity<String> arkivPost = restTemplate.getForEntity("henvendelsesArkiv?id=" + arkivpostId, String.class);
+        ResponseEntity<String> arkivPost = restTemplate.getForEntity("http" + BASIC_AUTH_SEPERATOR + "//localhost:7070/isAlive?id=" + arkivpostId, String.class);
 
         JsonParser parser = new JsonParser();
         JsonObject o = parser.parse(arkivPost.toString()).getAsJsonObject();
