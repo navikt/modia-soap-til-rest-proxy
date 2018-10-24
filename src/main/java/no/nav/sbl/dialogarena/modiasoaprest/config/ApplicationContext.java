@@ -8,8 +8,6 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @Configuration
 @EnableAspectJAutoProxy
 @ComponentScan("no.nav.sbl.dialogarena.modiasoaprest")
-//@Import({AbacContext.class, AktorConfig.class})
-//@Import({BehandleHenvendelseConfig.class, LesHenvendelseConfig.class})
 public class ApplicationContext implements ApiApplication {
 
 
