@@ -20,8 +20,8 @@
         <henvendelse.arkivering.aktivitet.version>2.0.0</henvendelse.arkivering.aktivitet.version>
         <henvendelse.arkivering.informasjon.version>2.0.0</henvendelse.arkivering.informasjon.version>
 
-        <joda-time.version>2.2</joda-time.version>
         <oauth2-oidc-sdk.version>5.17.1</oauth2-oidc-sdk.version>
+        <gson.version>2.8.5</gson.version>
     </properties>
 
     <build>
@@ -41,7 +41,7 @@
     </dependencyManagement>
 
     <dependencies>
-        <!--eksterne tjenester-->
+        <!--Tjenestespesifikasjoner-->
         <dependency>
             <groupId>no.nav.sbl.dialogarena</groupId>
             <artifactId>henvendelse-arkivering-aktivitet</artifactId>
@@ -53,19 +53,44 @@
             <version>${henvendelse.arkivering.informasjon.version}</version>
         </dependency>
 
+        <!-- Interne avhengigheter -->
+        <dependency>
+            <groupId>no.nav.sbl</groupId>
+            <artifactId>api-app</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.sbl.dialogarena</groupId>
+            <artifactId>test-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.sbl.dialogarena</groupId>
+            <artifactId>common-jetty</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.sbl.dialogarena</groupId>
+            <artifactId>common-test</artifactId>
+        </dependency>
+
+        <!-- Eksterne avhengigheter -->
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
-            <version>${joda-time.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>${gson.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
         </dependency>
 
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
         </dependency>
         <dependency>
             <groupId>org.junit.vintage</groupId>
@@ -76,30 +101,33 @@
             <artifactId>junit-platform-launcher</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-core</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-        </dependency>
+
         <dependency>
             <groupId>org.opensaml</groupId>
             <artifactId>opensaml-saml-api</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.apache.wss4j</groupId>
             <artifactId>wss4j-ws-security-common</artifactId>
         </dependency>
 
+        <!-- Spring -->
         <dependency>
-            <groupId>no.nav.sbl</groupId>
-            <artifactId>api-app</artifactId>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
         </dependency>
-
         <dependency>
-            <groupId>no.nav.sbl.dialogarena</groupId>
-            <artifactId>test-config</artifactId>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -109,18 +137,10 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
         </dependency>
-
         <dependency>
-            <groupId>no.nav.sbl.dialogarena</groupId>
-            <artifactId>common-jetty</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.8.5</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
         </dependency>
     </dependencies>
-
 
 </project>

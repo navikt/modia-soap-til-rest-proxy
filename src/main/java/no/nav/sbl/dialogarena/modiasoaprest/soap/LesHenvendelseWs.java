@@ -3,8 +3,8 @@ package no.nav.sbl.dialogarena.modiasoaprest.soap;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import no.nav.apiapp.soap.SoapTjeneste;
-import no.nav.sbl.dialogarena.modiasoaprest.service.SamlToOidcService;
 import no.nav.sbl.dialogarena.modiasoaprest.mapping.ArkivpostMapper;
+import no.nav.sbl.dialogarena.modiasoaprest.service.SamlToOidcService;
 import no.nav.tjeneste.domene.brukerdialog.arkiverthenvendelse.v2.informasjon.ArkivertHenvendelseV2;
 import no.nav.tjeneste.domene.brukerdialog.arkivtjenester.v2.typer.Arkivpost;
 import no.nav.tjeneste.domene.brukerdialog.arkivtjenester.v2.typer.ArkivpostTemagruppe;
@@ -13,13 +13,13 @@ import org.apache.cxf.message.Message;
 import org.apache.cxf.phase.PhaseInterceptorChain;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
-import javax.inject.Inject;
 import java.util.List;
 
 @Service
@@ -28,7 +28,7 @@ public class LesHenvendelseWs implements ArkivertHenvendelseV2 {
 
     private Logger logger = LoggerFactory.getLogger(LesHenvendelseWs.class);
 
-    @Inject
+    @Autowired
     SamlToOidcService samlToOidcService;
 
     @Override

@@ -7,15 +7,14 @@ import no.nav.tjeneste.domene.brukerdialog.arkivtjenester.v2.typer.Arkivpost;
 import org.apache.cxf.message.Message;
 import org.apache.cxf.phase.PhaseInterceptorChain;
 import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.inject.Inject;
 
 @Service
 @SoapTjeneste("/ArkiverHenvendelseBehandling_v2")
 public class BehandleHenvendelseWs implements ArkiverHenvendelseBehandlingV2 {
 
-    @Inject
+    @Autowired
     SamlToOidcService samlToOidcService;
 
     @Override
