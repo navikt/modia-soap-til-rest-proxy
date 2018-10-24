@@ -1,0 +1,11 @@
+package no.nav.sbl.dialogarena.modiasoaprest.common;
+
+public class Constants {
+    public static final String BASIC_AUTH_SEPERATOR = ":";
+    public static final String SECURITY_TOKEN_SERVICE_URL = "https" + BASIC_AUTH_SEPERATOR + "//security-token-service.nais.preprod.local/rest/v1/sts/token/exchange";
+    public static final String GRANT_TYPE_PARAM = "urn" + BASIC_AUTH_SEPERATOR + "ietf:params:oauth:grant-type:token-exchange";
+    public static final String REQUESTED_TOKEN_TYPE_PARAM = "urn" + BASIC_AUTH_SEPERATOR + "ietf:params:oauth:token-type:access_token";
+    public static final String SUBJECT_TOKEN_TYPE_PARAM = "urn" + BASIC_AUTH_SEPERATOR + "ietf:params:oauth:token-type:saml2";
+    public static final String MODIASOAPRESTPROXY_SYSTEM_USER = "srvmodiasoaprestpr";
+    public static final String MODIASOAPRESTPROXY_SYSTEM_USER_PASSWORD = System.getProperty("no.nav.modig.security.systemuser.password");
+}
