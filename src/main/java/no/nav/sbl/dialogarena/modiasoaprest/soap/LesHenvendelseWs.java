@@ -14,7 +14,9 @@ import org.apache.cxf.phase.PhaseInterceptorChain;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
@@ -22,10 +24,11 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
+import static no.nav.sbl.dialogarena.modiasoaprest.common.Constants.TODO_HENVENDELSESARKIV_REST_URL;
+
 @Service
 @SoapTjeneste("/ArkivertHenvendelseV2")
 public class LesHenvendelseWs implements ArkivertHenvendelseV2 {
-
     private Logger logger = LoggerFactory.getLogger(LesHenvendelseWs.class);
 
     @Autowired
@@ -40,7 +43,8 @@ public class LesHenvendelseWs implements ArkivertHenvendelseV2 {
         Message currentMessage = PhaseInterceptorChain.getCurrentMessage();
         String oidcToken = samlToOidcService.konverterSamlTokenTilOIDCToken(currentMessage);
 
-        //TODO: Do call
+        //TODO: for test
+        hentArkivpostFraRestService(oidcToken, "");
         return null;
     }
 
@@ -66,12 +70,12 @@ public class LesHenvendelseWs implements ArkivertHenvendelseV2 {
     private Arkivpost hentArkivpostFraRestService(String oidcToken, String arkivpostId) {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
-
         headers.set("Authorization", "Bearer " + oidcToken);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
 
         ResponseEntity<String> arkivPost = null;
         try {
-            arkivPost = restTemplate.getForEntity("http://localhost:7070/isAlive?id=" + arkivpostId, String.class);
+            arkivPost = restTemplate.exchange(TODO_HENVENDELSESARKIV_REST_URL + arkivpostId, HttpMethod.GET, entity, String.class);
         } catch (RestClientException e) {
             throw new RuntimeException("Feilet i henting av arkivpost", e);
         }
