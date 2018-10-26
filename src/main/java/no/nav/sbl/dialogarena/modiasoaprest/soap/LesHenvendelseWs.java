@@ -85,5 +85,6 @@ public class LesHenvendelseWs implements ArkivertHenvendelseV2 {
 
         ArkivpostMapper mapper = new ArkivpostMapper();
         return mapper.mapToArkivpost(o);
+        
     }
 }
