@@ -1,7 +1,6 @@
-package no.nav.sbl.dialogarena.mapping;
+package no.nav.sbl.dialogarena.modiasoaprest.mapping;
 
 import org.joda.time.DateTime;
-import org.joda.time.format.ISODateTimeFormat;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;

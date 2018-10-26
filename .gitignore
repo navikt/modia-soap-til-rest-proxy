@@ -1,3 +1,6 @@
 .idea/
 *.iml
 target/
+/abac-tjenestekall.log
+/credentials.properties
+SERVICE_CALLS_HOME_IS_UNDEFINED/
