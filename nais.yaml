@@ -1,0 +1,23 @@
+# ref https://raw.githubusercontent.com/nais/naisd/master/nais_example.yaml
+image: docker.adeo.no:5000/fo/modiasoaprestproxy
+team: oppfolging
+replicas:
+  min: 2
+  max: 4
+  cpuThresholdPercentage: 50
+port: 8992
+healthcheck:
+  liveness:
+    path: isAlive
+    initialDelay: 10
+  readiness:
+    path: isReady
+    initialDelay: 10
+fasitResources:
+  exposed:
+  - alias: ArkiverHenvendelseBehandling_v2
+    resourceType: webserviceendpoint
+  - alias: ArkivertHenvendelseV2
+    resourceType: webserviceendpoint
+  used:
+  #Henvendelsesarkiv resttjenester.
