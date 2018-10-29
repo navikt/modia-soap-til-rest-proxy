@@ -13,6 +13,16 @@ healthcheck:
   readiness:
     path: isReady
     initialDelay: 10
+  prometheus:
+    enabled: true
+    path: modia-soap-rest-proxy/internal/metrics
+  resources:
+    limits:
+      cpu: 3000m
+      memory: 1024Mi
+    requests:
+      cpu: 200m
+      memory: 512Mi
 fasitResources:
   exposed:
   - alias: ArkiverHenvendelseBehandling_v2
@@ -20,4 +30,6 @@ fasitResources:
   - alias: ArkivertHenvendelseV2
     resourceType: webserviceendpoint
   used:
+    - alias: appdynamics
+      resourceType: applicationproperties
   #Henvendelsesarkiv resttjenester.
