@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>no.nav.sbl.dialogarena</groupId>
     <artifactId>modia-soap-til-rest-proxy</artifactId>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
     <version>1.0-SNAPSHOT</version>
 
     <name>modia-soap-til-rest-proxy</name>
