@@ -11,7 +11,7 @@
     <parent>
         <groupId>no.nav.sbl</groupId>
         <artifactId>mor-pom</artifactId>
-        <version>2018.04.06.10.32</version>
+        <version>2018.10.02.09.26</version>
     </parent>
 
     <properties>
@@ -33,7 +33,7 @@
             <dependency>
                 <groupId>no.nav.sbl</groupId>
                 <artifactId>bom</artifactId>
-                <version>2018.04.06.10.32</version>
+                <version>2018.10.02.09.26</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -110,7 +110,7 @@
             <artifactId>cxf-core</artifactId>
         </dependency>
 
-        <dependency>
+        <!--dependency>
             <groupId>org.opensaml</groupId>
             <artifactId>opensaml-saml-api</artifactId>
         </dependency>
@@ -118,7 +118,7 @@
         <dependency>
             <groupId>org.apache.wss4j</groupId>
             <artifactId>wss4j-ws-security-common</artifactId>
-        </dependency>
+        </dependency-->
 
         <!-- Spring -->
         <dependency>
