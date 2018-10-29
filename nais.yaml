@@ -27,10 +27,10 @@ fasitResources:
   exposed:
   - alias: ArkiverHenvendelseBehandling_v2
     resourceType: webserviceendpoint
-    securitytoken: saml
+    securityToken: SAML
   - alias: ArkivertHenvendelseV2
     resourceType: webserviceendpoint
-    securitytoken: saml
+    securityToken: SAML
   used:
     - alias: appdynamics
       resourceType: applicationproperties
