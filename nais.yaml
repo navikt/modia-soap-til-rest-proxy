@@ -13,10 +13,10 @@ healthcheck:
   readiness:
     path: isReady
     initialDelay: 10
-  prometheus:
+prometheus:
     enabled: true
     path: modia-soap-rest-proxy/internal/metrics
-  resources:
+resources:
     limits:
       cpu: 3000m
       memory: 1024Mi
