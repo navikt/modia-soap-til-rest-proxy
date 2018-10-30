@@ -7,6 +7,7 @@ public class Constants {
     public static final String GRANT_TYPE_PARAM = "urn:ietf:params:oauth:grant-type:token-exchange";
     public static final String REQUESTED_TOKEN_TYPE_PARAM = "urn:ietf:params:oauth:token-type:access_token";
     public static final String SUBJECT_TOKEN_TYPE_PARAM = "urn:ietf:params:oauth:token-type:saml2";
-    public static final String MODIASOAPRESTPROXY_SYSTEM_USER = "srvmodia-soap-til-";
-    public static final String MODIASOAPRESTPROXY_SYSTEM_USER_PASSWORD = System.getProperty("no.nav.modig.security.systemuser.password");
+    public static final String MODIASOAPRESTPROXY_SYSTEM_USER = System.getProperty("srvmodia-soap-til-rest-proxy_username");
+    public static final String MODIASOAPRESTPROXY_SYSTEM_USER_PASSWORD = System.getProperty("srvmodia-soap-til-rest-proxy_password");
+    public static final String APPLICATION_NAME = "modia-soap-til-rest-proxy";
 }
