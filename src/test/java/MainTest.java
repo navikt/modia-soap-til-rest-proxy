@@ -1,5 +1,3 @@
-package no.nav.sbl.dialogarena.modiasoaprest;
-
 import no.nav.sbl.dialogarena.modiasoaprest.config.AppContextTest;
 import no.nav.testconfig.ApiAppTest;
 

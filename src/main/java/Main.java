@@ -1,5 +1,3 @@
-package no.nav.sbl.dialogarena.modiasoaprest;
-
 import no.nav.apiapp.ApiApp;
 import no.nav.sbl.dialogarena.modiasoaprest.config.ApplicationContext;
 
