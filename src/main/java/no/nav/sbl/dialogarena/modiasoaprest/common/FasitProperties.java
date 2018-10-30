@@ -5,9 +5,9 @@ public class FasitProperties {
         String envPropertyValue = System.getenv(propertyName);
         String propertyValue = System.getProperty(propertyName);
 
-        if(!envPropertyValue.isEmpty()) {
+        if(envPropertyValue != null && !envPropertyValue.isEmpty()) {
             return envPropertyValue;
-        } else if(!propertyValue.isEmpty()) {
+        } else if(propertyValue != null && !propertyValue.isEmpty()) {
             return propertyValue;
         }
         throw new RuntimeException("Mangler property:" + propertyName);
