@@ -9,10 +9,10 @@ port: 8992
 healthcheck:
   liveness:
     path: isAlive
-    initialDelay: 10
+    initialDelay: 60
   readiness:
     path: isReady
-    initialDelay: 10
+    initialDelay: 60
 prometheus:
     enabled: true
     path: modia-soap-rest-proxy/internal/metrics
