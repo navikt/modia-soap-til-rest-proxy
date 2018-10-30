@@ -42,4 +42,6 @@ fasitResources:
   used:
     - alias: appdynamics
       resourceType: applicationproperties
+    - alias: srvmodia-soap-til-rest-proxy
+      resourceType: credential
   #Henvendelsesarkiv resttjenester.
