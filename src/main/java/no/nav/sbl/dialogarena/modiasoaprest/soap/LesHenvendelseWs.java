@@ -52,7 +52,6 @@ public class LesHenvendelseWs implements ArkivertHenvendelseV2 {
     public List<ArkivpostTemagruppe> hentArkiverteTemagrupper(String aktorId) {
         Message currentMessage = PhaseInterceptorChain.getCurrentMessage();
         String oidcToken = samlToOidcService.konverterSamlTokenTilOIDCToken(currentMessage);
-
         
         //TODO: Do call
         return null;
