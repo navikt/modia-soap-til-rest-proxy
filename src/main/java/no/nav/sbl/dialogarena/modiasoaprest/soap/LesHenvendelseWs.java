@@ -53,6 +53,7 @@ public class LesHenvendelseWs implements ArkivertHenvendelseV2 {
         Message currentMessage = PhaseInterceptorChain.getCurrentMessage();
         String oidcToken = samlToOidcService.konverterSamlTokenTilOIDCToken(currentMessage);
 
+        
         //TODO: Do call
         return null;
     }
