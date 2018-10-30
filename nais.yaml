@@ -27,10 +27,18 @@ fasitResources:
   exposed:
   - alias: ArkiverHenvendelseBehandling_v2
     resourceType: webserviceendpoint
+    path: /ws/ArkiverHenvendelseBehandling_v2
     securityToken: SAML
+    wsdlGroupId: no.nav.sbl.dialogarena
+    wsdlArtifactId: henvendelse-arkivering-aktivitet
+    wsdlVersion: 2.0.0
   - alias: ArkivertHenvendelseV2
     resourceType: webserviceendpoint
+    path: /ws/ArkivertHenvendelseV2
     securityToken: SAML
+    wsdlGroupId: no.nav.sbl.dialogarena
+    wsdlArtifactId: henvendelse-arkivering-informasjon
+    wsdlVersion: 2.0.0
   used:
     - alias: appdynamics
       resourceType: applicationproperties
