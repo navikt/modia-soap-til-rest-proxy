@@ -10,13 +10,11 @@ class FasitPropertiesTest {
     String minPropertyName = "srvmodia-soap-til-rest-proxy_username";
     String minPropertyVerdi = "minVerdi";
 
-
     @Test
     public void skalFeileOmPropertyIkkeFunnet() {
         assertThrows(RuntimeException.class, () -> {
             FasitProperties.getFasitProperty(minPropertyName);
         });
-
     }
 
     @Test
@@ -27,7 +25,4 @@ class FasitPropertiesTest {
 
         System.clearProperty(minPropertyName);
     }
-
-
-
 }

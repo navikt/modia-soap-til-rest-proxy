@@ -8,8 +8,6 @@ class MainTest {
     public static void main(String[] args) {
         AppContextTest.setUp();
 
-
-
         ApiAppTest.setupTestContext(ApiAppTest.Config.builder().applicationName("modia-soap-til-rest-proxy").build());
 
         Main.main(TEST_PORT);
