@@ -21,7 +21,7 @@ class FasitPropertiesTest {
 
     @Test
     public void skalHentePropertyOmSatt() {
-        System.setProperty(minPropertyName.toUpperCase(), minPropertyVerdi);
+        System.setProperty(minPropertyName, minPropertyVerdi);
 
         assertEquals(minPropertyVerdi, FasitProperties.getFasitProperty(minPropertyName));
 
