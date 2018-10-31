@@ -32,18 +32,6 @@ public class ApplicationContext implements ApiApplication.NaisApiApplication {
     }
 
     private IssoConfig getIssoLoginConfig() {
-        logger.error("####");
-        Properties properties = System.getProperties();
-        for (String key: properties.stringPropertyNames()) {
-            logger.error(key);
-        }
-        logger.error("####");
-        Map<String, String> getenv = System.getenv();
-        for (String key: getenv.keySet()) {
-            logger.error(key);
-        }
-        logger.error("####");
-
         return IssoConfig.builder().username(MODIASOAPRESTPROXY_SYSTEM_USER).password(MODIASOAPRESTPROXY_SYSTEM_USER_PASSWORD).build();
     }
 }

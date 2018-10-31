@@ -9,7 +9,8 @@ public class Constants {
     public static final String GRANT_TYPE_PARAM = "urn:ietf:params:oauth:grant-type:token-exchange";
     public static final String REQUESTED_TOKEN_TYPE_PARAM = "urn:ietf:params:oauth:token-type:access_token";
     public static final String SUBJECT_TOKEN_TYPE_PARAM = "urn:ietf:params:oauth:token-type:saml2";
-    public static final String MODIASOAPRESTPROXY_SYSTEM_USER = getFasitProperty("srvmodia-soap-til-rest-proxy_username".toUpperCase());
-    public static final String MODIASOAPRESTPROXY_SYSTEM_USER_PASSWORD = getFasitProperty("srvmodia-soap-til-rest-proxy_password".toUpperCase());
+
+    public static final String MODIASOAPRESTPROXY_SYSTEM_USER = getFasitProperty("SRVMODIA_SOAP_TIL_REST_PROXY_USERNAME");
+    public static final String MODIASOAPRESTPROXY_SYSTEM_USER_PASSWORD = getFasitProperty("SRVMODIA_SOAP_TIL_REST_PROXY_PASSWORD");
     public static final String APPLICATION_NAME = "modia-soap-til-rest-proxy";
 }
