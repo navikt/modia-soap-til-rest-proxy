@@ -62,5 +62,5 @@ fasitResources:
     - alias: veilarblogin.redirect-url
       resourceType: restservice
       propertyMap:
-        url: OIDC_REDIRECT_URL
+              url: OIDC_REDIRECT_URL
   #Henvendelsesarkiv resttjenester.
