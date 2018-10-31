@@ -8,14 +8,14 @@ replicas:
 port: 8992
 healthcheck:
   liveness:
-    path: modia-soap-til-rest-proxy/internal/isAlive
+    path: internal/isAlive
     initialDelay: 60
   readiness:
-    path: modia-soap-til-rest-proxy/internal/selftest
+    path: internal/selftest
     initialDelay: 60
 prometheus:
     enabled: true
-    path: modia-soap-til-rest-proxy/internal/metrics
+    path: internal/metrics
 resources:
     limits:
       cpu: 3000m
