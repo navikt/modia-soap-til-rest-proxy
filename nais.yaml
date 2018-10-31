@@ -44,6 +44,8 @@ fasitResources:
       resourceType: applicationproperties
     - alias: srvmodia-soap-til-rest-proxy
       resourceType: credential
+    - alias: securityTokenService
+      resourceType: baseUrl
     # ISSO
     - alias: isso-host
       resourceType: baseurl
