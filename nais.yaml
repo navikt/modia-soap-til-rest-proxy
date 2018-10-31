@@ -8,14 +8,14 @@ replicas:
 port: 8992
 healthcheck:
   liveness:
-    path: isAlive
+    path: modia-soap-til-rest-proxy/internal/isAlive
     initialDelay: 60
   readiness:
-    path: isReady
+    path: modia-soap-til-rest-proxy/internal/selftest
     initialDelay: 60
 prometheus:
     enabled: true
-    path: modia-soap-rest-proxy/internal/metrics
+    path: modia-soap-til-rest-proxy/internal/metrics
 resources:
     limits:
       cpu: 3000m
@@ -62,5 +62,5 @@ fasitResources:
     - alias: veilarblogin.redirect-url
       resourceType: restservice
       propertyMap:
-        url: OIDC_REDIRECT_URL
+      url: OIDC_REDIRECT_URL
   #Henvendelsesarkiv resttjenester.

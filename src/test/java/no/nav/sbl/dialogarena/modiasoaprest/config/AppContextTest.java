@@ -32,9 +32,11 @@ public class AppContextTest {
         String securityTokenService = FasitUtils.getBaseUrl("securityTokenService", FSS);
         ServiceUser srvModiaSoapTilRestProxy = FasitUtils.getServiceUser("srvmodia-soap-til-rest-proxy", APPLICATION_NAME);
 
+        setProperty("SRVMODIA_SOAP_TIL_REST_PROXY_USERNAME", srvModiaSoapTilRestProxy.username);
+        setProperty("SRVMODIA_SOAP_TIL_REST_PROXY_PASSWORD", srvModiaSoapTilRestProxy.password);
         setProperty(StsSecurityConstants.STS_URL_KEY, securityTokenService);
-        setProperty(StsSecurityConstants.SYSTEMUSER_USERNAME, srvModiaSoapTilRestProxy.getUsername());
-        setProperty(StsSecurityConstants.SYSTEMUSER_PASSWORD, srvModiaSoapTilRestProxy.getPassword());
+        setProperty(StsSecurityConstants.SYSTEMUSER_USERNAME, srvModiaSoapTilRestProxy.getUsername().toUpperCase());
+        setProperty(StsSecurityConstants.SYSTEMUSER_PASSWORD, srvModiaSoapTilRestProxy.getPassword().toUpperCase());
 
         setProperty(ABAC_ENDPOINT_URL_PROPERTY_NAME, FasitUtils.getRestService("abac.pdp.endpoint", getDefaultEnvironment()).getUrl());
         setProperty(CredentialConstants.SYSTEMUSER_USERNAME, srvModiaSoapTilRestProxy.getUsername());
