@@ -1,11 +1,12 @@
 # ref https://raw.githubusercontent.com/nais/naisd/master/nais_example.yaml
+name: modia-soap-til-rest-proxy
 image: repo.adeo.no:5443/oppfolging/modia-soap-til-rest-proxy
 team: oppfolging
 replicas:
   min: 2
   max: 4
   cpuThresholdPercentage: 50
-port: 8992
+port: 8080
 healthcheck:
   liveness:
     path: modia-soap-til-rest-proxy/internal/isAlive
