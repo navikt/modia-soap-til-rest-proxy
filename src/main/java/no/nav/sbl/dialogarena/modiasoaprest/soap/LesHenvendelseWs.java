@@ -23,12 +23,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static no.nav.sbl.dialogarena.modiasoaprest.common.Constants.HENVENDELSESARKIV_ARKIVPOSTER_URL;
 import static no.nav.sbl.dialogarena.modiasoaprest.common.Constants.HENVENDELSESARKIV_ENKELTARKIVPOST_URL;
-import static no.nav.sbl.dialogarena.modiasoaprest.common.Constants.TODO_HENVENDELSESARKIV_REST_URL;
 
 @Service
 @SoapTjeneste("/ArkivertHenvendelseV2")
