@@ -1,5 +1,6 @@
 package no.nav.sbl.dialogarena.modiasoaprest.soap;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import no.nav.apiapp.soap.SoapTjeneste;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static no.nav.sbl.dialogarena.modiasoaprest.common.Constants.TODO_HENVENDELSESARKIV_REST_URL;
@@ -43,9 +45,7 @@ public class LesHenvendelseWs implements ArkivertHenvendelseV2 {
         Message currentMessage = PhaseInterceptorChain.getCurrentMessage();
         String oidcToken = samlToOidcService.konverterSamlTokenTilOIDCToken(currentMessage);
 
-        //TODO: for test
-        hentArkivpostFraRestService(oidcToken, "");
-        return null;
+        return hentArkivposterFraRestService(oidcToken,aktorId,filter);
     }
 
     @Override
@@ -86,5 +86,27 @@ public class LesHenvendelseWs implements ArkivertHenvendelseV2 {
         ArkivpostMapper mapper = new ArkivpostMapper();
         return mapper.mapToArkivpost(o);
         
+    }
+
+    private List<Arkivpost> hentArkivposterFraRestService(String oidcToken, String aktorId, Filter filter) {
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + oidcToken);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<String> arkivPost = null;
+        try {
+            arkivPost = restTemplate.exchange(TODO_HENVENDELSESARKIV_REST_URL, HttpMethod.GET, entity, String.class);
+        } catch (RestClientException e) {
+            throw new RuntimeException("Feilet i henting av arkivposter", e);
+        }
+
+        JsonParser parser = new JsonParser();
+        JsonArray o = parser.parse(arkivPost.toString()).getAsJsonArray();
+
+        ArkivpostMapper mapper = new ArkivpostMapper();
+
+        return mapper.mapToArkivpostList(o);
+
     }
 }
