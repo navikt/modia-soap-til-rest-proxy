@@ -26,6 +26,8 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static no.nav.sbl.dialogarena.modiasoaprest.common.Constants.HENVENDELSESARKIV_ARKIVPOSTER_URL;
+import static no.nav.sbl.dialogarena.modiasoaprest.common.Constants.HENVENDELSESARKIV_ENKELTARKIVPOST_URL;
 import static no.nav.sbl.dialogarena.modiasoaprest.common.Constants.TODO_HENVENDELSESARKIV_REST_URL;
 
 @Service
@@ -75,7 +77,7 @@ public class LesHenvendelseWs implements ArkivertHenvendelseV2 {
 
         ResponseEntity<String> arkivPost = null;
         try {
-            arkivPost = restTemplate.exchange(TODO_HENVENDELSESARKIV_REST_URL + arkivpostId, HttpMethod.GET, entity, String.class);
+            arkivPost = restTemplate.exchange(HENVENDELSESARKIV_ENKELTARKIVPOST_URL + arkivpostId, HttpMethod.GET, entity, String.class);
         } catch (RestClientException e) {
             throw new RuntimeException("Feilet i henting av arkivpost", e);
         }
@@ -96,7 +98,7 @@ public class LesHenvendelseWs implements ArkivertHenvendelseV2 {
 
         ResponseEntity<String> arkivPost = null;
         try {
-            arkivPost = restTemplate.exchange(TODO_HENVENDELSESARKIV_REST_URL, HttpMethod.GET, entity, String.class);
+            arkivPost = restTemplate.exchange(HENVENDELSESARKIV_ARKIVPOSTER_URL + aktorId, HttpMethod.GET, entity, String.class);
         } catch (RestClientException e) {
             throw new RuntimeException("Feilet i henting av arkivposter", e);
         }
