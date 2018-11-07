@@ -96,16 +96,16 @@ public class LesHenvendelseWs implements ArkivertHenvendelseV2 {
 
         ResponseEntity<String> arkivPost = null;
         try {
-            logger.debug("### Henter arkivposter ###");
+            logger.info("### Henter arkivposter ###");
             arkivPost = restTemplate.exchange(HENVENDELSESARKIV_ARKIVPOSTER_URL + aktorId, HttpMethod.GET, entity, String.class);
-            logger.debug("###" + arkivPost.toString() + "###");
+            logger.info("###" + arkivPost.toString() + "###");
         } catch (RestClientException e) {
             throw new RuntimeException("Feilet i henting av arkivposter", e);
         }
 
         JsonParser parser = new JsonParser();
         JsonArray o = parser.parse(arkivPost.toString()).getAsJsonArray();
-        logger.debug("###" + o.getAsString() + "###");
+        logger.info("###" + o.getAsString() + "###");
 
         ArkivpostMapper mapper = new ArkivpostMapper();
 
