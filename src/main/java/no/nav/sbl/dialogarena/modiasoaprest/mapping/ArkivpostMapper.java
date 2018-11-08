@@ -53,7 +53,7 @@ public class ArkivpostMapper {
         obj.addProperty("innhold", post.getInnhold());
         obj.addProperty("journalfoerendeEnhet", post.getJournalfoerendeEnhetREF());
         obj.addProperty("status", post.getArkivStatus().toString());
-        obj.addProperty("kategoriKode", post.getDokumentinfoRelasjon().getKategorikode());
+        obj.addProperty("kategorikode", post.getDokumentinfoRelasjon().getKategorikode());
         List<DokumentInnhold> beskriverInnhold = post.getDokumentinfoRelasjon().getBeskriverInnhold();
         if(beskriverInnhold != null) {
             obj.add("beskriverInnhold", gson.toJsonTree(beskriverInnhold));
@@ -84,7 +84,7 @@ public class ArkivpostMapper {
         ap.setType(ArkivpostType.fromValue(obj.getAsJsonPrimitive("arkivpostType").getAsString()));
         DokumentinfoRelasjon dr = new DokumentinfoRelasjon();
         dr.setDokumenttype(obj.getAsJsonPrimitive("dokumentType").getAsString());
-        dr.setKategorikode(obj.getAsJsonPrimitive("kategoriKode").getAsString());
+        dr.setKategorikode(obj.getAsJsonPrimitive("kategorikode").getAsString());
         dr.setSensitivitet(obj.getAsJsonPrimitive("sensitiv").getAsBoolean());
 
         List<DokumentInnhold> beskriverInnhold = dr.getBeskriverInnhold();
