@@ -105,7 +105,6 @@ public class LesHenvendelseWs implements ArkivertHenvendelseV2 {
 
         JsonParser parser = new JsonParser();
         JsonArray o = parser.parse(arkivPost.getBody().toString()).getAsJsonArray();
-        logger.info("###" + o.getAsString() + "###");
 
         ArkivpostMapper mapper = new ArkivpostMapper();
 
