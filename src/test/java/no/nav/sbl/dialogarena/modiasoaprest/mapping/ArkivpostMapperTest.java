@@ -38,6 +38,53 @@ public class ArkivpostMapperTest {
     }
 
     @Test
+    public void skalMappeFraJsonTilArkivPostMedManglendeVedlegg() {
+        Arkivpost expectedArkivpost = lagArkivpost(0);
+
+        String json = "{\n" +
+                "    \"arkivpostId\": Id123,\n" +
+                "    \"arkivertDato\": \"2012-12-11T11:11:00\",\n" +
+                "    \"mottattDato\": \"2012-12-12T12:12:00\",\n" +
+                "    \"utgaarDato\": \"2013-12-11T11:11:00\",\n" +
+                "    \"temagruppe\": \"temagruppe\",\n" +
+                "    \"arkivpostType\": \"INNGAAENDE\",\n" +
+                "    \"dokumentType\": \"dok-type\",\n" +
+                "    \"kryssreferanseId\": \"ABC123\",\n" +
+                "    \"kanal\": \"kanal\",\n" +
+                "    \"aktoerId\": \"aktoerId\",\n" +
+                "    \"fodselsnummer\": \"fnr\",\n" +
+                "    \"innhold\": \"inhold\",\n" +
+                "    \"journalfoerendeEnhet\": \"journal-ref\",\n" +
+                "    \"status\": \"ARKIVERT\",\n" +
+                "    \"kategorikode\": \"kat\",\n" +
+                "    \"signert\": false,\n" +
+                "    \"erOrganInternt\": false,\n" +
+                "    \"begrensetPartInnsyn\": false,\n" +
+                "    \"sensitiv\": true,\n" +
+                "    \"vedleggListe\": [\n" +
+                "      {\n" +
+                "        \"arkivpostId\": ID123,\n" +
+                "        \"filnavn\": \"fil0\",\n" +
+                "        \"filtype\": \"xml0\",\n" +
+                "        \"variantformat\": \"xml0\",\n" +
+                "        \"tittel\": \"hei på deg0\",\n" +
+                "        \"brevkode\": \"hva er dette?0\",\n" +
+                "        \"strukturert\": true\n" +
+                "      }\n" +
+                "    ]\n" +
+                "  }";
+
+        JsonObject jsonObject = parser.parse(json).getAsJsonObject();
+
+        Arkivpost arkivpost = mapper.mapToArkivpost(jsonObject);
+
+
+        assertEquals(expectedArkivpost.getDokumentinfoRelasjon().getBeskriverInnhold().size(), 0);
+        assertEquals(expectedArkivpost.getMottattDato(), arkivpost.getMottattDato());
+        assertEquals(expectedArkivpost.getArkivpostId(), arkivpost.getArkivpostId());
+    }
+
+    @Test
     public void skalMappeFraJsonListeTilAkivpostListe() {
         List<Arkivpost> expectedArkivposter = Arrays.asList(
                 lagArkivpost(1),
@@ -109,6 +156,9 @@ public class ArkivpostMapperTest {
     }
 
     private static Collection<DokumentInnhold> lagDokumentinnhold(final int antallDokumentinnhold) {
+        if(antallDokumentinnhold == 0) {
+            return null;
+        }
         final List<DokumentInnhold> dokumentInnhold = new ArrayList<>();
         for (int i = 0; i < antallDokumentinnhold; i++) {
             dokumentInnhold.add(new DokumentInnhold()

@@ -88,21 +88,22 @@ public class ArkivpostMapper {
         dr.setSensitivitet(obj.getAsJsonPrimitive("sensitiv").getAsBoolean());
 
         List<DokumentInnhold> beskriverInnhold = dr.getBeskriverInnhold();
-        beskriverInnhold.addAll(gson.fromJson(obj.getAsJsonArray("beskriverInnhold"), new TypeToken<List<DokumentInnhold>>(){}.getType()));
+
+        JsonArray vedleggJsonArray = obj.getAsJsonArray("beskriverInnhold");
+        if(vedleggJsonArray != null) {
+            beskriverInnhold.addAll(gson.fromJson(vedleggJsonArray, new TypeToken<List<DokumentInnhold>>(){}.getType()));
+        }
 
         ap.setDokumentinfoRelasjon(dr);
         ap.setKryssreferanse(new Kryssreferanse()
-                .withReferansekode(obj.getAsJsonPrimitive("kryssreferanseKode").getAsString())
                 .withReferanseId(obj.getAsJsonPrimitive("kryssreferanseId").getAsString()));
         ap.setKanal(obj.getAsJsonPrimitive("kanal").getAsString());
-        if (ap.getType() == ArkivpostType.INNGAAENDE) {
-            ap.setForBruker(new Person().withAktoerId(obj.getAsJsonPrimitive("aktoerId").getAsString())
-                    .withFodselsnummer(obj.getAsJsonPrimitive("fodselsnummer").getAsString()));
-        } else {
+        if (ap.getType() != ArkivpostType.INNGAAENDE) {
             ap.setForBruker(new Saksbehandler().withNavIdent(obj.getAsJsonPrimitive("navIdent").getAsString()));
         }
-        ap.setEksternPart(new Person().withAktoerId(obj.getAsJsonPrimitive("eksternPartAktorId").getAsString())
-                .withFodselsnummer(obj.getAsJsonPrimitive("eksternPartFodselsnummer").getAsString()));
+        ap.setForBruker(new Person().withAktoerId(obj.getAsJsonPrimitive("aktoerId").getAsString())
+                .withFodselsnummer(obj.getAsJsonPrimitive("fodselsnummer").getAsString()));
+
         ap.setInnhold(obj.getAsJsonPrimitive("innhold").getAsString());
         ap.setJournalfoerendeEnhetREF(obj.getAsJsonPrimitive("journalfoerendeEnhet").getAsString());
         ap.setArkivStatus(ArkivStatusType.fromValue(obj.getAsJsonPrimitive("status").getAsString()));
