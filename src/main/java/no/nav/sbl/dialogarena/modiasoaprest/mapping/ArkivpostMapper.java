@@ -93,9 +93,10 @@ public class ArkivpostMapper {
         if(vedleggJsonArray != null) {
             beskriverInnhold.addAll(gson.fromJson(vedleggJsonArray, new TypeToken<List<DokumentInnhold>>(){}.getType()));
         }
-
+        
         ap.setDokumentinfoRelasjon(dr);
         ap.setKryssreferanse(new Kryssreferanse()
+                .withReferansekode("DIALOG_REKKE")
                 .withReferanseId(obj.getAsJsonPrimitive("kryssreferanseId").getAsString()));
         ap.setKanal(obj.getAsJsonPrimitive("kanal").getAsString());
         if (ap.getType() != ArkivpostType.INNGAAENDE) {
