@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import no.nav.apiapp.soap.SoapTjeneste;
 import no.nav.sbl.dialogarena.modiasoaprest.mapping.ArkivpostMapper;
+import no.nav.sbl.dialogarena.modiasoaprest.mapping.ArkivpostTemagruppeMapper;
 import no.nav.sbl.dialogarena.modiasoaprest.service.SamlToOidcService;
 import no.nav.tjeneste.domene.brukerdialog.arkiverthenvendelse.v2.informasjon.ArkivertHenvendelseV2;
 import no.nav.tjeneste.domene.brukerdialog.arkivtjenester.v2.typer.Arkivpost;
@@ -26,6 +27,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 
 import static no.nav.sbl.dialogarena.modiasoaprest.common.Constants.HENVENDELSESARKIV_ARKIVPOSTER_URL;
+import static no.nav.sbl.dialogarena.modiasoaprest.common.Constants.HENVENDELSESARKIV_ARKIVPOST_TEMAGRUPPE_URL;
 import static no.nav.sbl.dialogarena.modiasoaprest.common.Constants.HENVENDELSESARKIV_ENKELTARKIVPOST_URL;
 
 @Service
@@ -53,8 +55,8 @@ public class LesHenvendelseWs implements ArkivertHenvendelseV2 {
         Message currentMessage = PhaseInterceptorChain.getCurrentMessage();
         String oidcToken = samlToOidcService.konverterSamlTokenTilOIDCToken(currentMessage);
         
-        //TODO: Do call
-        return null;
+        List<ArkivpostTemagruppe> arkivpostTemagruppe = hentArkivpostTemagruppeFraRestService(oidcToken, aktorId);
+        return arkivpostTemagruppe;
     }
 
     @Override
@@ -65,6 +67,27 @@ public class LesHenvendelseWs implements ArkivertHenvendelseV2 {
         Arkivpost arkivpost = hentArkivpostFraRestService(oidcToken, arkivpostId);
 
         return arkivpost;
+    }
+
+    private List<ArkivpostTemagruppe> hentArkivpostTemagruppeFraRestService(String oidcToken, String aktorId) {
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + oidcToken);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<String> arkivPostTemagruppe = null;
+        try {
+            arkivPostTemagruppe = restTemplate.exchange(HENVENDELSESARKIV_ARKIVPOST_TEMAGRUPPE_URL + aktorId, HttpMethod.GET, entity, String.class);
+        } catch (RestClientException e) {
+            throw new RuntimeException("Feilet i henting av arkivpost", e);
+        }
+
+        JsonParser parser = new JsonParser();
+        JsonArray o = parser.parse(arkivPostTemagruppe.getBody().toString()).getAsJsonArray();
+        logger.info("###" + arkivPostTemagruppe.getBody().toString() + "###");
+
+        ArkivpostTemagruppeMapper mapper = new ArkivpostTemagruppeMapper();
+        return mapper.mapToArkivpostTemagruppe(o);
     }
 
     private Arkivpost hentArkivpostFraRestService(String oidcToken, String arkivpostId) {

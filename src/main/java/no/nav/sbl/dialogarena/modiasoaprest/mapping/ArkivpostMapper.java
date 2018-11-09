@@ -113,7 +113,6 @@ public class ArkivpostMapper {
                 beskriverInnhold.add(dokumentInnhold);
             }
 
-//            beskriverInnhold.addAll(gson.fromJson(vedleggJsonArray, new TypeToken<List<DokumentInnhold>>(){}.getType()));
         }
 
         ap.setDokumentinfoRelasjon(dr);
