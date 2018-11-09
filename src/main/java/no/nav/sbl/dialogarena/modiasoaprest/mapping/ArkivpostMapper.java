@@ -6,6 +6,7 @@ import no.nav.tjeneste.domene.brukerdialog.arkivtjenester.v2.typer.*;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 public class ArkivpostMapper {
@@ -90,7 +91,29 @@ public class ArkivpostMapper {
 
         JsonArray vedleggJsonArray = obj.getAsJsonArray("vedleggListe");
         if(vedleggJsonArray != null) {
-            beskriverInnhold.addAll(gson.fromJson(vedleggJsonArray, new TypeToken<List<DokumentInnhold>>(){}.getType()));
+            for (JsonElement element: vedleggJsonArray) {
+                JsonObject elementJsonObject = element.getAsJsonObject();
+
+                DokumentInnhold dokumentInnhold = new DokumentInnhold();
+                dokumentInnhold.setBrevkode(elementJsonObject.getAsJsonPrimitive("brevkode").getAsString());
+                dokumentInnhold.setFilnavn(elementJsonObject.getAsJsonPrimitive("filnavn").getAsString());
+                dokumentInnhold.setFiltype(elementJsonObject.getAsJsonPrimitive("filtype").getAsString());
+                dokumentInnhold.setTittel(elementJsonObject.getAsJsonPrimitive("tittel").getAsString());
+                dokumentInnhold.setVariantformat(elementJsonObject.getAsJsonPrimitive("variantformat").getAsString());
+
+                if(elementJsonObject.getAsJsonPrimitive("strukturert") != null) {
+                    dokumentInnhold.setInnholdStrukturert(elementJsonObject.getAsJsonPrimitive("strukturert").getAsBoolean());
+                }
+
+                JsonPrimitive base64encodedInnhold = elementJsonObject.getAsJsonPrimitive("innhold");
+                if(base64encodedInnhold != null && base64encodedInnhold.getAsString() != "") {
+                    dokumentInnhold.setInnhold(Base64.getDecoder().decode(base64encodedInnhold.getAsString()));
+                }
+
+                beskriverInnhold.add(dokumentInnhold);
+            }
+
+//            beskriverInnhold.addAll(gson.fromJson(vedleggJsonArray, new TypeToken<List<DokumentInnhold>>(){}.getType()));
         }
 
         ap.setDokumentinfoRelasjon(dr);
