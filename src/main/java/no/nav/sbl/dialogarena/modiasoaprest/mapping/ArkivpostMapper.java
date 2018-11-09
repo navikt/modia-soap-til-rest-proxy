@@ -105,7 +105,7 @@ public class ArkivpostMapper {
                     dokumentInnhold.setInnholdStrukturert(elementJsonObject.getAsJsonPrimitive("strukturert").getAsBoolean());
                 }
 
-                JsonPrimitive base64encodedInnhold = elementJsonObject.getAsJsonPrimitive("innhold");
+                JsonPrimitive base64encodedInnhold = elementJsonObject.getAsJsonPrimitive("dokument");
                 if(base64encodedInnhold != null && base64encodedInnhold.getAsString() != "") {
                     dokumentInnhold.setInnhold(Base64.getDecoder().decode(base64encodedInnhold.getAsString()));
                 }
