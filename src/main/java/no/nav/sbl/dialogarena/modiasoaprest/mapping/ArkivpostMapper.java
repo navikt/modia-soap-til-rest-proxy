@@ -34,11 +34,7 @@ public class ArkivpostMapper {
             obj.addProperty("kryssreferanseId", post.getKryssreferanse().getReferanseId());
             obj.addProperty("kryssreferanseKode", post.getKryssreferanse().getReferansekode());
         }
-//        if (post.getEksternPart() != null) {
-//            Person eksternPart = (Person) post.getEksternPart();
-//            obj.addProperty("eksternPartAktorId", eksternPart.getAktoerId());
-//            obj.addProperty("eksternPartFodselsnummer", eksternPart.getFodselsnummer());
-//        }
+
         obj.addProperty("kanal", post.getKanal());
         if (post.getType() == ArkivpostType.INNGAAENDE) {
             Person p = (Person) post.getForBruker();

@@ -104,7 +104,7 @@ public class LesHenvendelseWs implements ArkivertHenvendelseV2 {
         }
 
         JsonParser parser = new JsonParser();
-        JsonObject o = parser.parse(arkivPost.toString()).getAsJsonObject();
+        JsonObject o = parser.parse(arkivPost.getBody().toString()).getAsJsonObject();
 
         ArkivpostMapper mapper = new ArkivpostMapper();
         return mapper.mapToArkivpost(o);
