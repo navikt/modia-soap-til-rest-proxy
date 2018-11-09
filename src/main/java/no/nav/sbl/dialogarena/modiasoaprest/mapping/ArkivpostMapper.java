@@ -33,11 +33,11 @@ public class ArkivpostMapper {
             obj.addProperty("kryssreferanseId", post.getKryssreferanse().getReferanseId());
             obj.addProperty("kryssreferanseKode", post.getKryssreferanse().getReferansekode());
         }
-        if (post.getEksternPart() != null) {
-            Person eksternPart = (Person) post.getEksternPart();
-            obj.addProperty("eksternPartAktorId", eksternPart.getAktoerId());
-            obj.addProperty("eksternPartFodselsnummer", eksternPart.getFodselsnummer());
-        }
+//        if (post.getEksternPart() != null) {
+//            Person eksternPart = (Person) post.getEksternPart();
+//            obj.addProperty("eksternPartAktorId", eksternPart.getAktoerId());
+//            obj.addProperty("eksternPartFodselsnummer", eksternPart.getFodselsnummer());
+//        }
         obj.addProperty("kanal", post.getKanal());
         if (post.getType() == ArkivpostType.INNGAAENDE) {
             Person p = (Person) post.getForBruker();
@@ -57,7 +57,6 @@ public class ArkivpostMapper {
         List<DokumentInnhold> beskriverInnhold = post.getDokumentinfoRelasjon().getBeskriverInnhold();
         if(beskriverInnhold != null) {
             obj.add("beskriverInnhold", gson.toJsonTree(beskriverInnhold));
-            //obj.addProperty("beskriverInnhold",gson.toJson(beskriverInnhold));
         }
         obj.addProperty("signert", post.isSignert());
         obj.addProperty("erOrganInternt", post.isErOrganinternt());
@@ -93,7 +92,7 @@ public class ArkivpostMapper {
         if(vedleggJsonArray != null) {
             beskriverInnhold.addAll(gson.fromJson(vedleggJsonArray, new TypeToken<List<DokumentInnhold>>(){}.getType()));
         }
-        
+
         ap.setDokumentinfoRelasjon(dr);
         ap.setKryssreferanse(new Kryssreferanse()
                 .withReferansekode("DIALOG_REKKE")
@@ -104,7 +103,8 @@ public class ArkivpostMapper {
         }
         ap.setForBruker(new Person().withAktoerId(obj.getAsJsonPrimitive("aktoerId").getAsString())
                 .withFodselsnummer(obj.getAsJsonPrimitive("fodselsnummer").getAsString()));
-
+        ap.setEksternPart(new Person().withAktoerId(obj.getAsJsonPrimitive("aktoerId").getAsString())
+                .withFodselsnummer(obj.getAsJsonPrimitive("fodselsnummer").getAsString()));
         ap.setInnhold(obj.getAsJsonPrimitive("innhold").getAsString());
         ap.setJournalfoerendeEnhetREF(obj.getAsJsonPrimitive("journalfoerendeEnhet").getAsString());
         ap.setArkivStatus(ArkivStatusType.fromValue(obj.getAsJsonPrimitive("status").getAsString()));
