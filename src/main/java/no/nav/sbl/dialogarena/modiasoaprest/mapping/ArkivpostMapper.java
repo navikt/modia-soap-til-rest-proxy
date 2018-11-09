@@ -56,7 +56,7 @@ public class ArkivpostMapper {
         obj.addProperty("kategorikode", post.getDokumentinfoRelasjon().getKategorikode());
         List<DokumentInnhold> beskriverInnhold = post.getDokumentinfoRelasjon().getBeskriverInnhold();
         if(beskriverInnhold != null) {
-            obj.add("beskriverInnhold", gson.toJsonTree(beskriverInnhold));
+            obj.add("vedleggListe", gson.toJsonTree(beskriverInnhold));
         }
         obj.addProperty("signert", post.isSignert());
         obj.addProperty("erOrganInternt", post.isErOrganinternt());
@@ -88,7 +88,7 @@ public class ArkivpostMapper {
 
         List<DokumentInnhold> beskriverInnhold = dr.getBeskriverInnhold();
 
-        JsonArray vedleggJsonArray = obj.getAsJsonArray("beskriverInnhold");
+        JsonArray vedleggJsonArray = obj.getAsJsonArray("vedleggListe");
         if(vedleggJsonArray != null) {
             beskriverInnhold.addAll(gson.fromJson(vedleggJsonArray, new TypeToken<List<DokumentInnhold>>(){}.getType()));
         }
