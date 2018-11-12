@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static no.nav.sbl.dialogarena.modiasoaprest.common.Constants.*;
+
 @Service
 @SoapTjeneste("/ArkivertHenvendelseV2")
 public class LesHenvendelseWs implements ArkivertHenvendelseV2 {
@@ -32,6 +34,17 @@ public class LesHenvendelseWs implements ArkivertHenvendelseV2 {
 
     @Override
     public List<Arkivpost> hentArkiverteHenvendelser(String aktorId, Filter filter) {
+
+        logger.error("####");
+        logger.error(TEST);
+        logger.error("####");
+        logger.error(TEST2);
+        logger.error("####");
+        logger.error(TEST3);
+        logger.error("####");
+        logger.error(TEST4);
+        logger.error("####");
+
         Message currentMessage = PhaseInterceptorChain.getCurrentMessage();
         String oidcToken = samlToOidcService.konverterSamlTokenTilOIDCToken(currentMessage);
 

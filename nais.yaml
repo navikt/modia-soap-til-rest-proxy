@@ -67,4 +67,7 @@ fasitResources:
       resourceType: restservice
       propertyMap:
               url: OIDC_REDIRECT_URL
-  #Henvendelsesarkiv resttjenester.
+    - alias: henvendelsesarkiv.arkivpost
+      resourceType: RestService
+    - alias: henvendelsesarkiv.temagrupper
+      resourceType: RestService
