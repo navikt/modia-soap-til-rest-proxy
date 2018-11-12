@@ -34,9 +34,6 @@ public class LesHenvendelseWs implements ArkivertHenvendelseV2 {
 
     @Override
     public List<Arkivpost> hentArkiverteHenvendelser(String aktorId, Filter filter) {
-
-        logger.error("####");
-        logger.error(TEST2);
         logger.error("####");
         logger.error(TEST4);
         logger.error("####");
