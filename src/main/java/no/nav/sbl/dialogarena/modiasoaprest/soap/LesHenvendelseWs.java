@@ -36,11 +36,7 @@ public class LesHenvendelseWs implements ArkivertHenvendelseV2 {
     public List<Arkivpost> hentArkiverteHenvendelser(String aktorId, Filter filter) {
 
         logger.error("####");
-        logger.error(TEST);
-        logger.error("####");
         logger.error(TEST2);
-        logger.error("####");
-        logger.error(TEST3);
         logger.error("####");
         logger.error(TEST4);
         logger.error("####");
