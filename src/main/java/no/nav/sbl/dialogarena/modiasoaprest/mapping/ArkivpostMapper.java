@@ -1,7 +1,6 @@
 package no.nav.sbl.dialogarena.modiasoaprest.mapping;
 
 import com.google.gson.*;
-import com.google.gson.reflect.TypeToken;
 import no.nav.tjeneste.domene.brukerdialog.arkivtjenester.v2.typer.*;
 import org.joda.time.DateTime;
 
@@ -9,8 +8,9 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
-public class ArkivpostMapper {
+import static no.nav.sbl.dialogarena.modiasoaprest.common.Constants.KRYSSREFERANSEKODE_SPORMSMAL_OG_SVAR;
 
+public class ArkivpostMapper {
     private Gson gson;
 
     public ArkivpostMapper() {
@@ -36,6 +36,7 @@ public class ArkivpostMapper {
         }
 
         obj.addProperty("kanal", post.getKanal());
+
         if (post.getType() == ArkivpostType.INNGAAENDE) {
             Person p = (Person) post.getForBruker();
             obj.addProperty("fodselsnummer", p.getFodselsnummer());
@@ -51,10 +52,12 @@ public class ArkivpostMapper {
         obj.addProperty("journalfoerendeEnhet", post.getJournalfoerendeEnhetREF());
         obj.addProperty("status", post.getArkivStatus().toString());
         obj.addProperty("kategorikode", post.getDokumentinfoRelasjon().getKategorikode());
+
         List<DokumentInnhold> beskriverInnhold = post.getDokumentinfoRelasjon().getBeskriverInnhold();
         if(beskriverInnhold != null) {
             obj.add("vedleggListe", gson.toJsonTree(beskriverInnhold));
         }
+
         obj.addProperty("signert", post.isSignert());
         obj.addProperty("erOrganInternt", post.isErOrganinternt());
         obj.addProperty("sensitiv", post.getDokumentinfoRelasjon().isSensitivitet());
@@ -69,22 +72,21 @@ public class ArkivpostMapper {
         return result;
     }
 
-    //Todo feilhåndtering
     public Arkivpost mapToArkivpost(JsonObject obj) {
-        Arkivpost ap = new Arkivpost();
-        ap.setArkivpostId(obj.getAsJsonPrimitive("arkivpostId").getAsString());
-        ap.setDokumentDato(DateTime.parse(obj.getAsJsonPrimitive("arkivertDato").getAsString()));
-        ap.setMottattDato(DateTime.parse(obj.getAsJsonPrimitive("mottattDato").getAsString()));
-        ap.setUtgaarDato(DateTime.parse(obj.getAsJsonPrimitive("utgaarDato").getAsString()));
-        ap.setArkivtema(obj.getAsJsonPrimitive("temagruppe").getAsString());
-        ap.setType(ArkivpostType.fromValue(obj.getAsJsonPrimitive("arkivpostType").getAsString()));
-        DokumentinfoRelasjon dr = new DokumentinfoRelasjon();
-        dr.setDokumenttype(obj.getAsJsonPrimitive("dokumentType").getAsString());
-        dr.setKategorikode(obj.getAsJsonPrimitive("kategorikode").getAsString());
-        dr.setSensitivitet(obj.getAsJsonPrimitive("sensitiv").getAsBoolean());
+        Arkivpost arkivpost = new Arkivpost();
+        arkivpost.setArkivpostId(obj.getAsJsonPrimitive("arkivpostId").getAsString());
+        arkivpost.setDokumentDato(DateTime.parse(obj.getAsJsonPrimitive("arkivertDato").getAsString()));
+        arkivpost.setMottattDato(DateTime.parse(obj.getAsJsonPrimitive("mottattDato").getAsString()));
+        arkivpost.setUtgaarDato(DateTime.parse(obj.getAsJsonPrimitive("utgaarDato").getAsString()));
+        arkivpost.setArkivtema(obj.getAsJsonPrimitive("temagruppe").getAsString());
+        arkivpost.setType(ArkivpostType.fromValue(obj.getAsJsonPrimitive("arkivpostType").getAsString()));
 
-        List<DokumentInnhold> beskriverInnhold = dr.getBeskriverInnhold();
+        DokumentinfoRelasjon dokumentinfoRelasjon = new DokumentinfoRelasjon();
+        dokumentinfoRelasjon.setDokumenttype(obj.getAsJsonPrimitive("dokumentType").getAsString());
+        dokumentinfoRelasjon.setKategorikode(obj.getAsJsonPrimitive("kategorikode").getAsString());
+        dokumentinfoRelasjon.setSensitivitet(obj.getAsJsonPrimitive("sensitiv").getAsBoolean());
 
+        List<DokumentInnhold> beskriverInnhold = dokumentinfoRelasjon.getBeskriverInnhold();
         JsonArray vedleggJsonArray = obj.getAsJsonArray("vedleggListe");
         if(vedleggJsonArray != null) {
             for (JsonElement element: vedleggJsonArray) {
@@ -110,24 +112,29 @@ public class ArkivpostMapper {
             }
 
         }
+        arkivpost.setDokumentinfoRelasjon(dokumentinfoRelasjon);
 
-        ap.setDokumentinfoRelasjon(dr);
-        ap.setKryssreferanse(new Kryssreferanse()
-                .withReferansekode("DIALOG_REKKE")
+        arkivpost.setKryssreferanse(new Kryssreferanse()
+                .withReferansekode(KRYSSREFERANSEKODE_SPORMSMAL_OG_SVAR)
                 .withReferanseId(obj.getAsJsonPrimitive("kryssreferanseId").getAsString()));
-        ap.setKanal(obj.getAsJsonPrimitive("kanal").getAsString());
-        if (ap.getType() != ArkivpostType.INNGAAENDE) {
-            ap.setForBruker(new Saksbehandler().withNavIdent(obj.getAsJsonPrimitive("navIdent").getAsString()));
+        arkivpost.setKanal(obj.getAsJsonPrimitive("kanal").getAsString());
+
+        if (arkivpost.getType() != ArkivpostType.INNGAAENDE) {
+            arkivpost.setForBruker(new Saksbehandler().withNavIdent(obj.getAsJsonPrimitive("navIdent").getAsString()));
+        } else {
+            arkivpost.setForBruker(new Person()
+                    .withAktoerId(obj.getAsJsonPrimitive("aktoerId").getAsString())
+                    .withFodselsnummer(obj.getAsJsonPrimitive("fodselsnummer").getAsString()));
         }
-        ap.setForBruker(new Person().withAktoerId(obj.getAsJsonPrimitive("aktoerId").getAsString())
+
+        arkivpost.setEksternPart(new Person().withAktoerId(obj.getAsJsonPrimitive("aktoerId").getAsString())
                 .withFodselsnummer(obj.getAsJsonPrimitive("fodselsnummer").getAsString()));
-        ap.setEksternPart(new Person().withAktoerId(obj.getAsJsonPrimitive("aktoerId").getAsString())
-                .withFodselsnummer(obj.getAsJsonPrimitive("fodselsnummer").getAsString()));
-        ap.setInnhold(obj.getAsJsonPrimitive("innhold").getAsString());
-        ap.setJournalfoerendeEnhetREF(obj.getAsJsonPrimitive("journalfoerendeEnhet").getAsString());
-        ap.setArkivStatus(ArkivStatusType.fromValue(obj.getAsJsonPrimitive("status").getAsString()));
-        ap.setSignert(obj.getAsJsonPrimitive("signert").getAsBoolean());
-        ap.setErOrganinternt(obj.getAsJsonPrimitive("erOrganInternt").getAsBoolean());
-        return ap;
+
+        arkivpost.setInnhold(obj.getAsJsonPrimitive("innhold").getAsString());
+        arkivpost.setJournalfoerendeEnhetREF(obj.getAsJsonPrimitive("journalfoerendeEnhet").getAsString());
+        arkivpost.setArkivStatus(ArkivStatusType.fromValue(obj.getAsJsonPrimitive("status").getAsString()));
+        arkivpost.setSignert(obj.getAsJsonPrimitive("signert").getAsBoolean());
+        arkivpost.setErOrganinternt(obj.getAsJsonPrimitive("erOrganInternt").getAsBoolean());
+        return arkivpost;
     }
 }

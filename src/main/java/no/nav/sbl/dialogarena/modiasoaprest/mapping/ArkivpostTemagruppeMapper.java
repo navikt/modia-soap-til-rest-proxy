@@ -10,16 +10,6 @@ import java.util.List;
 
 public class ArkivpostTemagruppeMapper {
 
-    private Gson gson;
-
-    public ArkivpostTemagruppeMapper() {
-        gson = new GsonBuilder().create();
-    }
-
-    public String mapToJson(List<ArkivpostTemagruppe> arkrivpostTemagruppe) {
-        return "";
-    }
-
     public List<ArkivpostTemagruppe> mapToArkivpostTemagruppe(JsonArray arkivPostTemagrupper) {
         List<ArkivpostTemagruppe> result = new ArrayList<>();
         if(arkivPostTemagrupper != null) {

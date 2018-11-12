@@ -1,11 +1,6 @@
 package no.nav.sbl.dialogarena.modiasoaprest.soap;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import no.nav.apiapp.soap.SoapTjeneste;
-import no.nav.sbl.dialogarena.modiasoaprest.mapping.ArkivpostMapper;
-import no.nav.sbl.dialogarena.modiasoaprest.mapping.ArkivpostTemagruppeMapper;
 import no.nav.sbl.dialogarena.modiasoaprest.service.SamlToOidcService;
 import no.nav.tjeneste.domene.brukerdialog.arkiverthenvendelse.v2.informasjon.ArkivertHenvendelseV2;
 import no.nav.tjeneste.domene.brukerdialog.arkivtjenester.v2.typer.Arkivpost;
@@ -16,19 +11,9 @@ import org.apache.cxf.phase.PhaseInterceptorChain;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
-
-import static no.nav.sbl.dialogarena.modiasoaprest.common.Constants.HENVENDELSESARKIV_ARKIVPOSTER_URL;
-import static no.nav.sbl.dialogarena.modiasoaprest.common.Constants.HENVENDELSESARKIV_ARKIVPOST_TEMAGRUPPE_URL;
-import static no.nav.sbl.dialogarena.modiasoaprest.common.Constants.HENVENDELSESARKIV_ENKELTARKIVPOST_URL;
 
 @Service
 @SoapTjeneste("/ArkivertHenvendelseV2")
@@ -37,6 +22,9 @@ public class LesHenvendelseWs implements ArkivertHenvendelseV2 {
 
     @Autowired
     SamlToOidcService samlToOidcService;
+
+    @Autowired
+    RestUtils restUtils;
 
     @Override
     public void ping() {
@@ -47,7 +35,7 @@ public class LesHenvendelseWs implements ArkivertHenvendelseV2 {
         Message currentMessage = PhaseInterceptorChain.getCurrentMessage();
         String oidcToken = samlToOidcService.konverterSamlTokenTilOIDCToken(currentMessage);
 
-        return hentArkivposterFraRestService(oidcToken,aktorId,filter);
+        return restUtils.hentArkivposterFraRestService(oidcToken, aktorId, filter);
     }
 
     @Override
@@ -55,7 +43,7 @@ public class LesHenvendelseWs implements ArkivertHenvendelseV2 {
         Message currentMessage = PhaseInterceptorChain.getCurrentMessage();
         String oidcToken = samlToOidcService.konverterSamlTokenTilOIDCToken(currentMessage);
         
-        List<ArkivpostTemagruppe> arkivpostTemagruppe = hentArkivpostTemagruppeFraRestService(oidcToken, aktorId);
+        List<ArkivpostTemagruppe> arkivpostTemagruppe = restUtils.hentArkivpostTemagruppeFraRestService(oidcToken, aktorId);
         return arkivpostTemagruppe;
     }
 
@@ -64,74 +52,8 @@ public class LesHenvendelseWs implements ArkivertHenvendelseV2 {
         Message currentMessage = PhaseInterceptorChain.getCurrentMessage();
         String oidcToken = samlToOidcService.konverterSamlTokenTilOIDCToken(currentMessage);
 
-        Arkivpost arkivpost = hentArkivpostFraRestService(oidcToken, arkivpostId);
+        Arkivpost arkivpost = restUtils.hentArkivpostFraRestService(oidcToken, arkivpostId);
 
         return arkivpost;
-    }
-
-    private List<ArkivpostTemagruppe> hentArkivpostTemagruppeFraRestService(String oidcToken, String aktorId) {
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer " + oidcToken);
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-
-        ResponseEntity<String> arkivPostTemagruppe = null;
-        try {
-            arkivPostTemagruppe = restTemplate.exchange(HENVENDELSESARKIV_ARKIVPOST_TEMAGRUPPE_URL + aktorId, HttpMethod.GET, entity, String.class);
-        } catch (RestClientException e) {
-            throw new RuntimeException("Feilet i henting av arkivpost", e);
-        }
-
-        JsonParser parser = new JsonParser();
-        JsonArray o = parser.parse(arkivPostTemagruppe.getBody().toString()).getAsJsonArray();
-        logger.info("###" + arkivPostTemagruppe.getBody().toString() + "###");
-
-        ArkivpostTemagruppeMapper mapper = new ArkivpostTemagruppeMapper();
-        return mapper.mapToArkivpostTemagruppe(o);
-    }
-
-    private Arkivpost hentArkivpostFraRestService(String oidcToken, String arkivpostId) {
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer " + oidcToken);
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-
-        ResponseEntity<String> arkivPost = null;
-        try {
-            arkivPost = restTemplate.exchange(HENVENDELSESARKIV_ENKELTARKIVPOST_URL + arkivpostId, HttpMethod.GET, entity, String.class);
-        } catch (RestClientException e) {
-            throw new RuntimeException("Feilet i henting av arkivpost", e);
-        }
-
-        JsonParser parser = new JsonParser();
-        JsonObject o = parser.parse(arkivPost.getBody().toString()).getAsJsonObject();
-
-        ArkivpostMapper mapper = new ArkivpostMapper();
-        return mapper.mapToArkivpost(o);
-        
-    }
-
-    private List<Arkivpost> hentArkivposterFraRestService(String oidcToken, String aktorId, Filter filter) {
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer " + oidcToken);
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-
-        ResponseEntity<String> arkivPost = null;
-        try {
-            logger.info("### Henter arkivposter ###");
-            arkivPost = restTemplate.exchange(HENVENDELSESARKIV_ARKIVPOSTER_URL + aktorId, HttpMethod.GET, entity, String.class);
-            logger.info("###" + arkivPost.getBody().toString() + "###");
-        } catch (RestClientException e) {
-            throw new RuntimeException("Feilet i henting av arkivposter", e);
-        }
-
-        JsonParser parser = new JsonParser();
-        JsonArray o = parser.parse(arkivPost.getBody().toString()).getAsJsonArray();
-
-        ArkivpostMapper mapper = new ArkivpostMapper();
-
-        return mapper.mapToArkivpostList(o);
-
     }
 }
