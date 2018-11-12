@@ -21,7 +21,5 @@ public class Constants {
     public static final String MODIASOAPRESTPROXY_SYSTEM_USER = getFasitProperty("SRVMODIA_SOAP_TIL_REST_PROXY_USERNAME");
     public static final String MODIASOAPRESTPROXY_SYSTEM_USER_PASSWORD = getFasitProperty("SRVMODIA_SOAP_TIL_REST_PROXY_PASSWORD");
 
-    public static final String TEST4 = getFasitProperty(" henvendelsesarkiv_arkivpost_url".toUpperCase());
-
     public static final String KRYSSREFERANSEKODE_SPORMSMAL_OG_SVAR = "DIALOG_REKKE";
 }

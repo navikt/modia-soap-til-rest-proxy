@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static no.nav.sbl.dialogarena.modiasoaprest.common.Constants.*;
+import static no.nav.sbl.dialogarena.modiasoaprest.common.FasitProperties.getFasitProperty;
 
 @Service
 @SoapTjeneste("/ArkivertHenvendelseV2")
@@ -34,9 +34,40 @@ public class LesHenvendelseWs implements ArkivertHenvendelseV2 {
 
     @Override
     public List<Arkivpost> hentArkiverteHenvendelser(String aktorId, Filter filter) {
-        logger.error("####");
-        logger.error(TEST4);
-        logger.error("####");
+
+
+        try {
+            String propertyName = "henvendelsesarkiv.arkivpost_url";
+            logger.error("####" + propertyName);
+            logger.error(getFasitProperty(propertyName));
+        } catch(RuntimeException e) {
+            logger.error("fant ikke", e);
+        }
+
+        try {
+            String propertyName = "henvendelsesarkiv.arkivpost_url".toUpperCase();
+            logger.error("####" + propertyName);
+            logger.error(getFasitProperty(propertyName));
+        } catch(RuntimeException e) {
+            logger.error("fant ikke", e);
+        }
+
+        try {
+            String propertyName = "henvendelsesarkiv_arkivpost_url";
+            logger.error("####" + propertyName);
+            logger.error(getFasitProperty(propertyName));
+        } catch(RuntimeException e) {
+            logger.error("fant ikke", e);
+        }
+
+        try {
+            String propertyName = "henvendelsesarkiv_arkivpost_url".toUpperCase();
+            logger.error("####" + propertyName);
+            logger.error(getFasitProperty(propertyName));
+        } catch(RuntimeException e) {
+            logger.error("fant ikke", e);
+        }
+
 
         Message currentMessage = PhaseInterceptorChain.getCurrentMessage();
         String oidcToken = samlToOidcService.konverterSamlTokenTilOIDCToken(currentMessage);
