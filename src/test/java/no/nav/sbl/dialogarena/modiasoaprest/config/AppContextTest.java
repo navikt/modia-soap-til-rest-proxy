@@ -62,6 +62,10 @@ public class AppContextTest {
         ServiceUser azureADClientId = FasitUtils.getServiceUser("aad_b2c_clientid", APPLICATION_NAME);
         Util.setProperty(AZUREAD_B2C_DISCOVERY_URL_PROPERTY_NAME, FasitUtils.getBaseUrl("aad_b2c_discovery"));
         Util.setProperty(AZUREAD_B2C_EXPECTED_AUDIENCE_PROPERTY_NAME, azureADClientId.username);
+
+        setProperty("HENVENDELSESARKIV_ARKIVPOST_URL", "https://henvendelsesarkiv2-t6.nais.preprod.local/arkivpost");
+        setProperty("HENVENDELSESARKIV_TEMAGRUPPER_URL", "https://henvendelsesarkiv2-t6.nais.preprod.local/temagrupper");
+        setProperty("SECURITY_TOKEN_SERVICE_TOKEN_URL", "https://security-token-service.nais.preprod.local/rest/v1/sts/token");
     }
 
     @Test

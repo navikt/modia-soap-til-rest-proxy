@@ -66,7 +66,7 @@ public class SamlToOidcService {
 
         ResponseEntity<String> tokenResponse = null;
         try {
-            tokenResponse = restTemplate.postForEntity(SECURITY_TOKEN_SERVICE_URL, request, String.class);
+            tokenResponse = restTemplate.postForEntity(SECURITY_TOKEN_SERVICE_BASEURL + "/exchange", request, String.class);
         } catch (RestClientException e) {
             throw new RuntimeException("Feilet i henting av OIDC-token", e);
         }

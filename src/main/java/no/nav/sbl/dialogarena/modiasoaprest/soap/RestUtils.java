@@ -30,7 +30,7 @@ public class RestUtils {
 
         ResponseEntity<String> arkivPostTemagruppe = null;
         try {
-            arkivPostTemagruppe = restTemplate.exchange(Constants.HENVENDELSESARKIV_ARKIVPOST_TEMAGRUPPE_URL + aktorId,
+            arkivPostTemagruppe = restTemplate.exchange(Constants.HENVENDELSESARKIV_TEMAGRUPPE_BASEURL + "/" + aktorId,
                     HttpMethod.GET, getHttpHeadersEntity(oidcToken), String.class);
         } catch (RestClientException e) {
             logger.error("Feilet i henting av arkivpost", e);
@@ -50,7 +50,7 @@ public class RestUtils {
 
         ResponseEntity<String> arkivPost = null;
         try {
-            arkivPost = restTemplate.exchange(Constants.HENVENDELSESARKIV_ENKELTARKIVPOST_URL + arkivpostId,
+            arkivPost = restTemplate.exchange(Constants.HENVENDELSESARKIV_ARKIVPOST_BASEURL + "/" + arkivpostId,
                     HttpMethod.GET, getHttpHeadersEntity(oidcToken), String.class);
         } catch (RestClientException e) {
             logger.error("Feilet i henting av arkivpost", e);
@@ -70,7 +70,7 @@ public class RestUtils {
         ResponseEntity<String> arkivPost = null;
         try {
             logger.info("### Henter arkivposter ###");
-            arkivPost = restTemplate.exchange(Constants.HENVENDELSESARKIV_ARKIVPOSTER_URL + aktorId, HttpMethod.GET,
+            arkivPost = restTemplate.exchange(Constants.HENVENDELSESARKIV_ARKIVPOST_BASEURL + "/aktoer/" + aktorId, HttpMethod.GET,
                     getHttpHeadersEntity(oidcToken), String.class);
             logger.info("###" + arkivPost.getBody().toString() + "###");
         } catch (RestClientException e) {

@@ -67,6 +67,8 @@ fasitResources:
       resourceType: restservice
       propertyMap:
               url: OIDC_REDIRECT_URL
+    - alias: security-token-service-token
+      resourceType: restservice
     - alias: henvendelsesarkiv.arkivpost
       resourceType: RestService
     - alias: henvendelsesarkiv.temagrupper
