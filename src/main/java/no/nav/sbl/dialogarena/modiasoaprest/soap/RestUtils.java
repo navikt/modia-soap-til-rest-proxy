@@ -11,14 +11,13 @@ import no.nav.tjeneste.domene.brukerdialog.arkivtjenester.v2.typer.ArkivpostTema
 import no.nav.tjeneste.domene.brukerdialog.arkivtjenester.v2.typer.Filter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -31,7 +30,7 @@ public class RestUtils {
         ResponseEntity<String> arkivPostTemagruppe = null;
         try {
             arkivPostTemagruppe = restTemplate.exchange(Constants.HENVENDELSESARKIV_TEMAGRUPPE_BASEURL + "/" + aktorId,
-                    HttpMethod.GET, getHttpHeadersEntity(oidcToken), String.class);
+                    HttpMethod.GET, getRequestHttpEntity(oidcToken), String.class);
         } catch (RestClientException e) {
             logger.error("Feilet i henting av arkivpost", e);
             throw new RuntimeException("Feilet i henting av arkivpost", e);
@@ -51,7 +50,7 @@ public class RestUtils {
         ResponseEntity<String> arkivPost = null;
         try {
             arkivPost = restTemplate.exchange(Constants.HENVENDELSESARKIV_ARKIVPOST_BASEURL + "/" + arkivpostId,
-                    HttpMethod.GET, getHttpHeadersEntity(oidcToken), String.class);
+                    HttpMethod.GET, getRequestHttpEntity(oidcToken), String.class);
         } catch (RestClientException e) {
             logger.error("Feilet i henting av arkivpost", e);
             throw new RuntimeException("Feilet i henting av arkivpost", e);
@@ -71,7 +70,7 @@ public class RestUtils {
         try {
             logger.info("### Henter arkivposter ###");
             arkivPost = restTemplate.exchange(Constants.HENVENDELSESARKIV_ARKIVPOST_BASEURL + "/aktoer/" + aktorId, HttpMethod.GET,
-                    getHttpHeadersEntity(oidcToken), String.class);
+                    getRequestHttpEntity(oidcToken), String.class);
             logger.info("###" + arkivPost.getBody().toString() + "###");
         } catch (RestClientException e) {
             logger.error("Feilet i henting av arkivpost", e);
@@ -86,9 +85,36 @@ public class RestUtils {
         return mapper.mapToArkivpostList(o);
     }
 
-    private HttpEntity<String> getHttpHeadersEntity(String oidcToken) {
+    private HttpEntity<String> getRequestHttpEntity(String oidcToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + oidcToken);
         return new HttpEntity<>(headers);
+    }
+
+    public Object arkiverHenvendelse(String oidcToken, Arkivpost arkivpost) {
+        RestTemplate restTemplate = new RestTemplate();
+
+        ArkivpostMapper mapper = new ArkivpostMapper();
+        String arkivpostJson = mapper.mapToJson(arkivpost);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + oidcToken);
+        headers.setContentType(MediaType.TEXT_PLAIN);
+        headers.setAccept(
+                Arrays.asList(MediaType.ALL)
+        );
+        HttpEntity<String> requestEntity = new HttpEntity<>(arkivpostJson, headers);
+
+        ResponseEntity<Object> arkivpostId = null;
+        try {
+           logger.info("### lagrer henvendelse ###");
+            arkivpostId = restTemplate.exchange(Constants.HENVENDELSESARKIV_ARKIVPOST_BASEURL,
+                   HttpMethod.POST, requestEntity, Object.class);
+        } catch (RestClientException e) {
+            logger.error("Feilet i lagring av arkivpost", e);
+            throw new RuntimeException("Feilet i lagring av arkivpost");
+        }
+
+        return arkivpostId.getBody();
     }
 }

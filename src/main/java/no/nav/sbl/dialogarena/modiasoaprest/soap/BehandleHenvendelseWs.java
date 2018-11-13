@@ -17,6 +17,9 @@ public class BehandleHenvendelseWs implements ArkiverHenvendelseBehandlingV2 {
     @Autowired
     SamlToOidcService samlToOidcService;
 
+    @Autowired
+    RestUtils restUtils;
+
     @Override
     public void ping() {
     }
@@ -26,6 +29,8 @@ public class BehandleHenvendelseWs implements ArkiverHenvendelseBehandlingV2 {
         Message currentMessage = PhaseInterceptorChain.getCurrentMessage();
         String oidcToken = samlToOidcService.konverterSamlTokenTilOIDCToken(currentMessage);
 
+
+
         //TODO: Do call
     }
 
@@ -33,6 +38,8 @@ public class BehandleHenvendelseWs implements ArkiverHenvendelseBehandlingV2 {
     public String arkiverHenvendelse(Arkivpost arkivpost) {
         Message currentMessage = PhaseInterceptorChain.getCurrentMessage();
         String oidcToken = samlToOidcService.konverterSamlTokenTilOIDCToken(currentMessage);
+
+        restUtils.arkiverHenvendelse(oidcToken, arkivpost);
 
         //TODO: Do call
         return null;

@@ -52,10 +52,28 @@ public class ArkivpostMapper {
         obj.addProperty("journalfoerendeEnhet", post.getJournalfoerendeEnhetREF());
         obj.addProperty("status", post.getArkivStatus().toString());
         obj.addProperty("kategorikode", post.getDokumentinfoRelasjon().getKategorikode());
+        obj.addProperty("begrensetPartInnsyn", post.getDokumentinfoRelasjon().isBegrensetPartsInnsyn());
 
         List<DokumentInnhold> beskriverInnhold = post.getDokumentinfoRelasjon().getBeskriverInnhold();
         if(beskriverInnhold != null) {
-            obj.add("vedleggListe", gson.toJsonTree(beskriverInnhold));
+            JsonArray array = new JsonArray();
+            for (DokumentInnhold dokumentInnhold: beskriverInnhold) {
+                JsonObject vedlegg = new JsonObject();
+
+                vedlegg.addProperty("filnavn", dokumentInnhold.getFilnavn());
+                vedlegg.addProperty("filtype", dokumentInnhold.getFiltype());
+                vedlegg.addProperty("variantformat", dokumentInnhold.getVariantformat());
+                vedlegg.addProperty("tittel", dokumentInnhold.getTittel());
+                vedlegg.addProperty("brevkode", dokumentInnhold.getBrevkode());
+                vedlegg.addProperty("strukturert", dokumentInnhold.isInnholdStrukturert());
+
+                if(dokumentInnhold.getInnhold() != null) {
+                    vedlegg.addProperty("dokument", Base64.getEncoder().encodeToString(dokumentInnhold.getInnhold()));
+                }
+
+                array.add(vedlegg);
+            }
+            obj.add("vedleggListe", array);
         }
 
         obj.addProperty("signert", post.isSignert());
