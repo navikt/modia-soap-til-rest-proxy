@@ -6,6 +6,7 @@ public class Constants {
     public static final String APPLICATION_NAME = "modia-soap-til-rest-proxy";
 
     public static final String BASIC_AUTH_SEPERATOR = ":";
+    public static final String DATO_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
 
     public static final String SECURITY_TOKEN_SERVICE_BASEURL = getFasitProperty("SECURITY_TOKEN_SERVICE_TOKEN_URL");
     public static final String GRANT_TYPE_PARAM = "urn:ietf:params:oauth:grant-type:token-exchange";
