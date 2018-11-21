@@ -12,9 +12,8 @@ healthcheck:
     path: modia-soap-til-rest-proxy/internal/isAlive
     initialDelay: 60
   readiness:
-    path: modia-soap-til-rest-proxy/internal/selftest
+    path: modia-soap-til-rest-proxy/internal/isReady
     initialDelay: 60
-    timeout: 10
 prometheus:
     enabled: true
     path: modia-soap-til-rest-proxy/internal/metrics
