@@ -25,13 +25,11 @@ public class BehandleHenvendelseWs implements ArkiverHenvendelseBehandlingV2 {
     }
 
     @Override
-    public void settUtgaarDato(String arkivpostId, DateTime dateTime) {
+    public void settUtgaarDato(String arkivpostId, DateTime dato) {
         Message currentMessage = PhaseInterceptorChain.getCurrentMessage();
         String oidcToken = samlToOidcService.konverterSamlTokenTilOIDCToken(currentMessage);
 
-
-
-        //TODO: Do call
+        restUtils.settUtgaarDato(oidcToken, arkivpostId, dato);
     }
 
     @Override
@@ -39,9 +37,8 @@ public class BehandleHenvendelseWs implements ArkiverHenvendelseBehandlingV2 {
         Message currentMessage = PhaseInterceptorChain.getCurrentMessage();
         String oidcToken = samlToOidcService.konverterSamlTokenTilOIDCToken(currentMessage);
 
-        restUtils.arkiverHenvendelse(oidcToken, arkivpost);
+        String arkivpostId = restUtils.arkiverHenvendelse(oidcToken, arkivpost);
 
-        //TODO: Do call
-        return null;
+        return arkivpostId;
     }
 }

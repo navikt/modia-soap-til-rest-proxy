@@ -73,3 +73,5 @@ fasitResources:
       resourceType: RestService
     - alias: henvendelsesarkiv.temagrupper
       resourceType: RestService
+alertProfiles:
+  - common-java-modules
