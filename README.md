@@ -3,17 +3,30 @@ En proxy for å gjøre om et SOAP-SAML request til et REST-OIDC kall.
 
 Dette er et mellomsteg for å sørge for at overgangen til rest blir så smooth som mulig og gjør det enklere å gjøre dette stegvis.
 
-Dokumenterer alle steg for jeg misstenker at dette må gjøres et par ganger...
+### Lokal kjøring
 
-### Steg for steg
-Oppdater [Tjenestespesifikasjoner](http://stash.devillo.no/projects/FELLES/repos/tjenestespesifikasjoner/browse) med WSDL, eller gjør det selv. Jeg brukte Tjenestespesifikasjoner fordi denne muliggjør å bruke en byggejobb på **cisbl** som da lager en artifact i nexus som kan brukes av alle tjenestene som skal bruke disse SOAP-kallene. Men det kan gjøres manuelt.
+Appen startes med MainTest-klassen, og denne forventer å finne en fasit.properties-fil med minimum følgende innhold
+```
+domenebrukernavn=<dinNavIdent>
+domenepassord=<dittNavPassord>
+testmiljo=t6
+```
 
-Sett opp SOAP-tjeneste.
+Webservice-tjenestene er eksponert på følgende URL
+[http://localhost:8802/modia-soap-til-rest-proxy/ws/](http://localhost:8802/modia-soap-til-rest-proxy/ws/)
 
-Sjekk at du klarer å kalle SOAP-tjeneste.
 
-Konverter SAML til OIDC.
+### Steg for steg - oppsett av ny tjeneste
+1. Oppdater [Tjenestespesifikasjoner](https://github.com/navikt/tjenestespesifikasjoner) med WSDL, eller gjør det selv. Jeg brukte Tjenestespesifikasjoner fordi denne bygger artifakt på travis som kan trekkes inn i både produsent og konsument. Men det kan gjøres manuelt.
 
-Map om objekter som kommer inn fra SOAP-kallet.
+2. Sett opp SOAP-tjeneste - benytt @Service og @Soaptjeneste("soaptjenestenavn")
 
-Bruk disse i kallet til REST.
+3. Sjekk at du klarer å kalle SOAP-tjeneste (eksempelvis med SoapUI)
+
+4. Konverter SAML til OIDC - benytt SamtToOidcService.java
+
+5. Map om objekter som kommer inn fra SOAP-kallet.
+
+6. Bruk disse i kallet til REST.
+
+7. Konverter svar fra REST-tjeneste til fornuftig svar på SOAP-kall.
