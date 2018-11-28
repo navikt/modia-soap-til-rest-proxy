@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-
-<configuration scan="true" scanPeriod="30 seconds">
-    <include resource="logback-default-without-abac.xml"/>
-    
-    <logger name="org.apache.cxf" level="ERROR"></logger>
-    <logger name="org.apache.wss4j.common.crypto.CryptoBase" level="ERROR"/>
-</configuration>
