@@ -9,20 +9,19 @@
     <name>modia-soap-til-rest-proxy</name>
 
     <parent>
-        <groupId>no.nav.sbl</groupId>
+        <groupId>no.nav.common</groupId>
         <artifactId>mor-pom</artifactId>
-        <version>2018.10.23.12.38</version>
+        <version>2018.11.28.20.34</version>
     </parent>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <henvendelse.arkivering.aktivitet.version>1.2018.11.20-18.20-f058c54de62c</henvendelse.arkivering.aktivitet.version>
-        <henvendelse.arkivering.informasjon.version>1.2018.11.20-18.20-f058c54de62c</henvendelse.arkivering.informasjon.version>
-
-        <nav.commons.version>2018.11.26.11.06</nav.commons.version>
         <oauth2-oidc-sdk.version>5.17.1</oauth2-oidc-sdk.version>
         <gson.version>2.8.5</gson.version>
+
+        <henvendelse.arkivering.aktivitet.version>1.2018.11.20-18.20-f058c54de62c</henvendelse.arkivering.aktivitet.version>
+        <henvendelse.arkivering.informasjon.version>1.2018.11.20-18.20-f058c54de62c</henvendelse.arkivering.informasjon.version>
     </properties>
 
     <build>
@@ -32,9 +31,9 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>no.nav.sbl</groupId>
+                <groupId>no.nav.common</groupId>
                 <artifactId>bom</artifactId>
-                <version>2018.10.23.12.38</version>
+                <version>2018.11.28.20.34</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -56,25 +55,20 @@
 
         <!-- Interne avhengigheter -->
         <dependency>
-            <groupId>no.nav.sbl</groupId>
+            <groupId>no.nav.common</groupId>
             <artifactId>api-app</artifactId>
         </dependency>
         <dependency>
             <groupId>no.nav.common</groupId>
-            <artifactId>log</artifactId>
-            <version>${nav.commons.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.sbl.dialogarena</groupId>
             <artifactId>test-config</artifactId>
         </dependency>
         <dependency>
-            <groupId>no.nav.sbl.dialogarena</groupId>
-            <artifactId>common-jetty</artifactId>
+            <groupId>no.nav.common</groupId>
+            <artifactId>jetty</artifactId>
         </dependency>
         <dependency>
-            <groupId>no.nav.sbl.dialogarena</groupId>
-            <artifactId>common-test</artifactId>
+            <groupId>no.nav.common</groupId>
+            <artifactId>test</artifactId>
         </dependency>
 
         <!-- Eksterne avhengigheter -->
