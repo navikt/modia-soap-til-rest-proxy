@@ -39,6 +39,7 @@ public class SamlToOidcService {
         JsonElement oidcToken = jsonResponse.getAsJsonObject().get("access_token");
 
         if(oidcToken == null || oidcToken.getAsString().isEmpty()) {
+
             throw new RuntimeException("Har ikke fått OIDC-token, OIDC-token er: "+ oidcToken);
         }
 
