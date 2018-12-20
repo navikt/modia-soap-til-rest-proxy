@@ -4,4 +4,6 @@
     <included>
         <include resource="logback-default-without-abac.xml"/>
     </included>
+    <logger name="org.apache.cxf" level="INFO"/>
+    <logger name="no.nav.sbl.dialogarena.common.cxf" level="INFO"/>
 </configuration>
