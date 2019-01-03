@@ -65,7 +65,7 @@ public class AppContextTest {
 
         setProperty("HENVENDELSESARKIV_ARKIVPOST_URL", "https://henvendelsesarkiv2-t6.nais.preprod.local/arkivpost");
         setProperty("HENVENDELSESARKIV_TEMAGRUPPER_URL", "https://henvendelsesarkiv2-t6.nais.preprod.local/temagrupper");
-        setProperty("SECURITY_TOKEN_SERVICE_TOKEN_URL", "https://security-token-service.nais.preprod.local/rest/v1/sts/token");
+        setProperty("SECURITY_TOKEN_SERVICE_TOKEN_URL", "https://security-token-service-t10.nais.preprod.local/rest/v1/sts/token");
     }
 
     @Test

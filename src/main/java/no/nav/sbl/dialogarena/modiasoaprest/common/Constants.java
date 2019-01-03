@@ -19,6 +19,5 @@ public class Constants {
     public static final String HENVENDELSESARKIV_ARKIVPOST_BASEURL = getFasitProperty("HENVENDELSESARKIV_ARKIVPOST_URL");
     public static final String HENVENDELSESARKIV_TEMAGRUPPE_BASEURL = getFasitProperty("HENVENDELSESARKIV_TEMAGRUPPER_URL");
 
-
     public static final String KRYSSREFERANSEKODE_SPORMSMAL_OG_SVAR = "DIALOG_REKKE";
 }
