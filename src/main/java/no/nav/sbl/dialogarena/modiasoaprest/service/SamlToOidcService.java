@@ -41,6 +41,7 @@ public class SamlToOidcService {
     public static final String EXPIRARY_URI = "exp";
     public static final String ACCESS_TOKEN_URI = "access_token";
     public static final String CONSUMER_ID_URI = "consumerId";
+    public static final String CONSUMER_ID_IKKE_FUNNET = "";
 
     private Map<String, String> tokenCache = new HashMap<>();
     private Logger logger = LoggerFactory.getLogger(SamlToOidcService.class);
@@ -59,11 +60,15 @@ public class SamlToOidcService {
 
         JsonElement oidcToken = getOidcToken(currentMessage);
 
-        if (consumerId.length() > 0) {
+        if (consumerIdFunnet(consumerId)) {
             tokenCache.put(consumerId, oidcToken.getAsString());
         }
 
         return oidcToken.getAsString();
+    }
+
+    private boolean consumerIdFunnet(String consumerId) {
+        return !CONSUMER_ID_IKKE_FUNNET.equals(consumerId);
     }
 
     private JsonElement getOidcToken(Message currentMessage) {
@@ -113,7 +118,8 @@ public class SamlToOidcService {
                 return claim.getValues().get(0).toString();
             }
         }
-        return "";
+        logger.warn("ConsumerId ikke funnet, tokencache vil ikke fungere.");
+        return CONSUMER_ID_IKKE_FUNNET;
     }
 
     private ResponseEntity<String> getOidcTokenFromSamlToken(String encodedSamlToken) {
