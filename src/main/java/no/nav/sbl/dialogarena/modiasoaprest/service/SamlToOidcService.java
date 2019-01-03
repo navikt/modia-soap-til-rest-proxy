@@ -105,7 +105,7 @@ public class SamlToOidcService {
             consumerId = new URI(CONSUMER_ID_URI);
         } catch (URISyntaxException e) {
             logger.error("Syntax-exception på consumerID, skal ikke skje", e);
-            throw new RuntimeException("\"Syntax-exception på consumerID, skal ikke skje", e);
+            throw new RuntimeException("Syntax-exception på consumerID, skal ikke skje", e);
         }
 
         for (Claim claim : claims) {
