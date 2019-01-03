@@ -44,7 +44,6 @@ public class BehandleHenvendelseWs implements ArkiverHenvendelseBehandlingV2 {
 
     @Override
     public String arkiverHenvendelse(Arkivpost arkivpost) {
-        logger.info("i arkiverHenvendelse - start");
         Message currentMessage = PhaseInterceptorChain.getCurrentMessage();
         String oidcToken = null;
         try {
@@ -53,11 +52,7 @@ public class BehandleHenvendelseWs implements ArkiverHenvendelseBehandlingV2 {
             logger.error("Noe feila: ", t);
             throw t;
         }
-        logger.info("i arkiverHenvendelse - har token");
 
-        String arkivpostId = restUtils.arkiverHenvendelse(oidcToken, arkivpost);
-
-        logger.info("i arkiverHenvendelse - har arkivpost");
-        return arkivpostId;
+        return restUtils.arkiverHenvendelse(oidcToken, arkivpost);
     }
 }
