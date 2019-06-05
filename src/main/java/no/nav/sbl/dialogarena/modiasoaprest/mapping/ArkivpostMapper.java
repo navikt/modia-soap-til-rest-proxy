@@ -3,6 +3,8 @@ package no.nav.sbl.dialogarena.modiasoaprest.mapping;
 import com.google.gson.*;
 import no.nav.tjeneste.domene.brukerdialog.arkivtjenester.v2.typer.*;
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Base64;
@@ -11,6 +13,8 @@ import java.util.List;
 import static no.nav.sbl.dialogarena.modiasoaprest.common.Constants.KRYSSREFERANSEKODE_SPORMSMAL_OG_SVAR;
 
 public class ArkivpostMapper {
+    private Logger logger = LoggerFactory.getLogger(ArkivpostMapper.class);
+
     private Gson gson;
 
     public ArkivpostMapper() {
@@ -129,6 +133,9 @@ public class ArkivpostMapper {
                 beskriverInnhold.add(dokumentInnhold);
             }
 
+        }
+        if (beskriverInnhold.size() == 0) {
+            logger.error("Fant tom beskriverInnhold for " + arkivpost.getArkivpostId());
         }
         arkivpost.setDokumentinfoRelasjon(dokumentinfoRelasjon);
 

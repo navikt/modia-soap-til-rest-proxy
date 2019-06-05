@@ -32,6 +32,7 @@ public class LesHenvendelseWs implements ArkivertHenvendelseV2 {
 
     @Override
     public List<Arkivpost> hentArkiverteHenvendelser(String aktorId, Filter filter) {
+        logger.info("Henter arkivposter for " + aktorId);
         Message currentMessage = PhaseInterceptorChain.getCurrentMessage();
         String oidcToken = samlToOidcService.konverterSamlTokenTilOIDCToken(currentMessage);
 
