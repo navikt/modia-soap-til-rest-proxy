@@ -135,7 +135,7 @@ public class ArkivpostMapper {
 
         }
         if (beskriverInnhold.size() == 0) {
-            logger.error("Fant tom beskriverInnhold for " + arkivpost.getArkivpostId());
+            logger.error("Fant tom beskriverInnhold for " + arkivpost.getArkivpostId() + " obj: " + obj.toString());
         }
         arkivpost.setDokumentinfoRelasjon(dokumentinfoRelasjon);
 
