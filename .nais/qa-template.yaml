@@ -9,7 +9,7 @@ metadata:
 spec:
   image: "{{image}}"
   ingresses:
-  - https://modia-soap-til-rest-proxy.nais.preprod.local/modia-soap-til-rest-proxy
+  - https://modia-soap-til-rest-proxy-{{ namespace }}.nais.preprod.local/modia-soap-til-rest-proxy
   - https://app-{{ namespace }}.adeo.no/modia-soap-til-rest-proxy
   port: 8080
   liveness:
