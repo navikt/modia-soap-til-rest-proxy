@@ -11,11 +11,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {ApplicationContext.class})
-public class AppContextTest {
+public class TestContextTest {
 
     @BeforeClass
     public static void setUp() {
-        NaisYamlUtils.loadFromYaml(".nais/nais.yaml");
+        NaisYamlUtils.loadFromYaml(".nais/qa-template.yaml");
     }
 
     @Test
