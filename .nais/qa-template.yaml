@@ -3,7 +3,7 @@ kind: Application
 apiVersion: nais.io/v1alpha1
 metadata:
   name: modia-soap-til-rest-proxy
-  namespace: default
+  namespace: {{ namespace }}
   labels:
     team: personoversikt
 spec:
