@@ -1,10 +1,13 @@
-FROM docker.adeo.no:5000/fo/maven as builder
+FROM maven:3.6.1-jdk-8-alpine as builder
 
-ARG app_name
+# sett riktig tidssone
+ENV TZ Europe/Oslo
+RUN ln -fs /usr/share/zoneinfo/Europe/Oslo /etc/localtime
 
 ADD / /source
 WORKDIR /source
 RUN mvn package -DskipTests
 
-FROM docker.adeo.no:5000/pus/nais-java-app
+FROM navikt/java:8-appdynamics
+ENV APPD_ENABLED=true
 COPY --from=builder /source/target/modia-soap-til-rest-proxy /app

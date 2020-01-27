@@ -1,0 +1,62 @@
+---
+kind: Application
+apiVersion: nais.io/v1alpha1
+metadata:
+  name: modia-soap-til-rest-proxy
+  namespace: {{ namespace }}
+  labels:
+    team: personoversikt
+spec:
+  image: "{{image}}"
+  ingresses:
+  - https://modia-soap-til-rest-proxy-{{ namespace }}.nais.preprod.local/modia-soap-til-rest-proxy
+  - https://app-{{ namespace }}.adeo.no/modia-soap-til-rest-proxy
+  port: 8080
+  liveness:
+    path: modia-soap-til-rest-proxy/internal/isAlive
+    initialDelay: 60
+  readiness:
+    path: modia-soap-til-rest-proxy/internal/isReady
+    initialDelay: 60
+  prometheus:
+    enabled: true
+    path: modia-soap-til-rest-proxy/internal/metrics
+  replicas:
+    min: 2
+    max: 4
+    cpuThresholdPercentage: 60
+  resources:
+    limits:
+      cpu: 3000m
+      memory: 1024Mi
+    requests:
+      cpu: 200m
+      memory: 512Mi
+  vault:
+    enabled: true
+    paths:
+      - kvPath: /serviceuser/data/dev/srvmodia-soap-til-rest-proxy
+        mountPath: /var/run/secrets/nais.io/service_user
+      - kvPath: /credential/data/dev/isso-rp-user-{{ namespace }}
+        mountPath: /var/run/secrets/nais.io/isso-rp-user
+  env:
+    - name: SECURITYTOKENSERVICE_URL
+      value: "https://sts-{{ namespace }}.preprod.local/SecurityTokenServiceProvider/"
+    - name: ISSO_HOST_URL
+      value: "https://isso-q.adeo.no/isso/oauth2"
+    - name: ISSO_JWKS_URL
+      value: "https://isso-q.adeo.no/isso/oauth2/connect/jwk_uri"
+    - name: ISSO_ISSUER_URL
+      value: "https://isso-q.adeo.no:443/isso/oauth2"
+    - name: ISSO_ISALIVE_URL
+      value: "https://isso-q.adeo.no/isso/isAlive.jsp"
+    - name: ABAC_PDP_ENDPOINT_URL
+      value: "https://wasapp-{{ namespace }}.adeo.no/asm-pdp/authorize"
+    - name: OIDC_REDIRECT_URL
+      value: "https://app-{{ namespace }}.adeo.no/veilarblogin/api/login"
+    - name: SECURITY_TOKEN_SERVICE_TOKEN_URL
+      value: "https://security-token-service.nais.preprod.local/rest/v1/sts/token"
+    - name: HENVENDELSESARKIV_ARKIVPOST_URL
+      value: "https://henvendelsesarkiv2-{{ namespace }}.nais.preprod.local/arkivpost"
+    - name: HENVENDELSESARKIV_TEMAGRUPPER_URL
+      value: "https://henvendelsesarkiv2-{{ namespace }}.nais.preprod.local/temagrupper"
