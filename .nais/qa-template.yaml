@@ -3,7 +3,7 @@ kind: Application
 apiVersion: nais.io/v1alpha1
 metadata:
   name: modia-soap-til-rest-proxy
-  namespace: {{ namespace }}
+  namespace: "{{ namespace }}"
   labels:
     team: personoversikt
 spec:
@@ -39,6 +39,8 @@ spec:
         mountPath: /var/run/secrets/nais.io/service_user
       - kvPath: /credential/data/dev/isso-rp-user-{{ namespace }}
         mountPath: /var/run/secrets/nais.io/isso-rp-user
+      - kvPath: /apikey/appdynamics/dev
+        mountPath: /var/run/secrets/nais.io/vault
   env:
     - name: SECURITYTOKENSERVICE_URL
       value: "https://sts-{{ namespace }}.preprod.local/SecurityTokenServiceProvider/"
