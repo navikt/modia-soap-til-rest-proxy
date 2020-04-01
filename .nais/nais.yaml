@@ -24,14 +24,14 @@ spec:
   replicas:
     min: 2
     max: 4
-    cpuThresholdPercentage: 60
+    cpuThresholdPercentage: 50
   resources:
     limits:
       cpu: 3000m
       memory: 1024Mi
     requests:
-      cpu: 200m
-      memory: 512Mi
+      cpu: 400m
+      memory: 768Mi
   vault:
     enabled: true
     paths:
