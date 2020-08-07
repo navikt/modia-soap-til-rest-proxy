@@ -8,6 +8,6 @@ ADD / /source
 WORKDIR /source
 RUN mvn package -DskipTests
 
-FROM navikt/java:8-appdynamics
+FROM navikt/java:11-appdynamics
 ENV APPD_ENABLED=true
 COPY --from=builder /source/target/modia-soap-til-rest-proxy /app

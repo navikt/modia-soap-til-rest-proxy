@@ -1,6 +1,6 @@
 package no.nav.sbl.dialogarena.modiasoaprest.common;
 
-import no.nav.sbl.util.EnvironmentUtils;
+import no.nav.common.utils.EnvironmentUtils;
 
 import static no.nav.sbl.dialogarena.modiasoaprest.common.FasitProperties.getFasitProperty;
 

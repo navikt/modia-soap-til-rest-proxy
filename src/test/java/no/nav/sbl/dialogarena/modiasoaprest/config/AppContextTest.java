@@ -1,6 +1,6 @@
 package no.nav.sbl.dialogarena.modiasoaprest.config;
 
-import no.nav.common.nais.utils.NaisYamlUtils;
+import no.nav.common.nais.NaisYamlUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;

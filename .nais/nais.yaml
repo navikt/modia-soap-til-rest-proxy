@@ -20,7 +20,7 @@ spec:
     initialDelay: 60
   prometheus:
     enabled: true
-    path: modia-soap-til-rest-proxy/internal/metrics
+    path: modia-soap-til-rest-proxy/internal/prometheus
   replicas:
     min: 2
     max: 4
@@ -37,8 +37,6 @@ spec:
     paths:
       - kvPath: /serviceuser/data/prod/srvmodia-soap-til-rest-proxy
         mountPath: /var/run/secrets/nais.io/service_user
-      - kvPath: /credential/data/prod/isso-rp-user
-        mountPath: /var/run/secrets/nais.io/isso-rp-user
       - kvPath: /apikey/appdynamics/prod
         mountPath: /var/run/secrets/nais.io/vault
   env:
