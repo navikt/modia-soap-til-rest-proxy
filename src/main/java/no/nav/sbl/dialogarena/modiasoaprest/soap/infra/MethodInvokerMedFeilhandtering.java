@@ -12,14 +12,21 @@ import javax.ws.rs.NotFoundException;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPFactory;
 import javax.xml.soap.SOAPFault;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.ws.soap.SOAPFaultException;
-
+import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
 
+import static javax.xml.transform.OutputKeys.INDENT;
+import static net.logstash.logback.encoder.org.apache.commons.lang.exception.ExceptionUtils.getStackTrace;
 import static no.nav.common.json.JsonUtils.toJson;
 import static no.nav.common.types.feil.FeilType.*;
+import static no.nav.common.utils.EnvironmentUtils.isDevelopment;
 import static no.nav.common.utils.StringUtils.notNullOrEmpty;
 
 public class MethodInvokerMedFeilhandtering extends JAXWSMethodInvoker {
@@ -42,7 +49,7 @@ public class MethodInvokerMedFeilhandtering extends JAXWSMethodInvoker {
         FeilDTO feilDTO = new FeilDTO(
                 UUID.randomUUID().toString(),
                 getType(throwable).getName(),
-                null
+                isDevelopment().orElse(false) ? finnDetaljer(throwable) : null
         );
         try {
             SOAPFault fault = soapFactory.createFault();
@@ -72,6 +79,31 @@ public class MethodInvokerMedFeilhandtering extends JAXWSMethodInvoker {
             return INGEN_TILGANG;
         } else {
             return UKJENT;
+        }
+    }
+
+    private static FeilDTO.Detaljer finnDetaljer(Throwable exception) {
+        return new FeilDTO.Detaljer(exception.getClass().getName(), exception.getMessage(), finnStackTrace(exception));
+    }
+
+    private static String finnStackTrace(Throwable exception) {
+        String stackTrace = getStackTrace(exception);
+        if (exception instanceof SOAPFaultException) {
+            return finnSoapStacktrace((SOAPFaultException) exception);
+        } else {
+            return stackTrace;
+        }
+    }
+
+    private static String finnSoapStacktrace(SOAPFaultException exception) {
+        try {
+            StringWriter writer = new StringWriter();
+            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            transformer.setOutputProperty(INDENT, "yes");
+            transformer.transform(new DOMSource(exception.getFault()), new StreamResult(writer));
+            return writer.toString();
+        } catch (Exception e) {
+            return exception.getMessage();
         }
     }
 
