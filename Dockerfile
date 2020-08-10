@@ -1,4 +1,4 @@
-FROM maven:3.6.1-jdk-8-alpine as builder
+FROM maven:3.6.1-jdk-11-slim as builder
 
 # sett riktig tidssone
 ENV TZ Europe/Oslo
