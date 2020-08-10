@@ -11,7 +11,6 @@ jobs:
   build:
     name: Test and build
     runs-on: ubuntu-latest
-    if: github.ref != 'refs/heads/dev' && github.ref != 'refs/heads/master'
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-java@v1
@@ -26,25 +25,8 @@ jobs:
       - name: Build using maven
         run: |
           mvn -P ci -B verify
-
-  build-and-push:
-    name: Build and push Docker container
-    if: github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/master'
-    env:
-      TZ: Europe/Oslo
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-java@v1
-        with:
-          java-version: 11
-      - uses: actions/cache@v1
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-maven-cache-${{ hashFiles('pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-cache-
       - name: Publish Docker image
+        if: github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/common-v2'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -54,12 +36,30 @@ jobs:
 
   deploy-qa:
     name: Deploy to preprod
-    needs: build-and-push
+    needs: build
     if: github.ref == 'refs/heads/dev'
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        namespace: [q0, q1, q6]
+        namespace: [q0, q6]
+    steps:
+      - uses: actions/checkout@v1
+      - uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          PRINT_PAYLOAD: true
+          CLUSTER: dev-fss
+          RESOURCE: .nais/qa-template.yaml
+          VAR: namespace=${{matrix.namespace}}
+
+  deploy-q1:
+    name: Deploy to preprod
+    needs: build
+    if: github.ref == 'refs/heads/common-v2'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        namespace: [q1]
     steps:
       - uses: actions/checkout@v1
       - uses: nais/deploy/actions/deploy@v1
@@ -72,7 +72,7 @@ jobs:
 
   deploy-prod:
     name: Deploy to prod
-    needs: build-and-push
+    needs: build
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
