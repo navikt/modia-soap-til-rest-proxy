@@ -9,6 +9,7 @@ import no.nav.common.rest.filter.SetStandardHttpHeadersFilter;
 import no.nav.common.utils.EnvironmentUtils;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 
 import static java.util.Collections.singletonList;
@@ -16,6 +17,7 @@ import static no.nav.common.auth.Constants.OPEN_AM_ID_TOKEN_COOKIE_NAME;
 import static no.nav.common.auth.Constants.REFRESH_TOKEN_COOKIE_NAME;
 import static no.nav.common.utils.EnvironmentUtils.isDevelopment;
 import static no.nav.common.utils.EnvironmentUtils.requireApplicationName;
+import static no.nav.sbl.dialogarena.modiasoaprest.common.Constants.APPLICATION_NAME;
 
 @Configuration
 public class LoginContext {
@@ -36,6 +38,7 @@ public class LoginContext {
     }
 
     @Bean
+    @Conditional(UseAuth.class)
     public FilterRegistrationBean authenticationFilterRegistration() {
         FilterRegistrationBean<OidcAuthenticationFilter> registration = new FilterRegistrationBean<>();
         registration.setFilter(new OidcAuthenticationFilter(singletonList(openAmAuthConfig())));
@@ -47,7 +50,7 @@ public class LoginContext {
     @Bean
     public FilterRegistrationBean logFilterRegistrationBean() {
         FilterRegistrationBean<LogFilter> registration = new FilterRegistrationBean<>();
-        registration.setFilter(new LogFilter(requireApplicationName(), isDevelopment().orElse(false)));
+        registration.setFilter(new LogFilter(APPLICATION_NAME, isDevelopment().orElse(false)));
         registration.setOrder(2);
         registration.addUrlPatterns("/*");
         return registration;
