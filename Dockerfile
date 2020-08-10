@@ -10,4 +10,4 @@ RUN mvn package -DskipTests
 
 FROM navikt/java:11-appdynamics
 ENV APPD_ENABLED=true
-COPY --from=builder /source/target/modia-soap-til-rest-proxy /app
+COPY --from=builder /source/target/modia-soap-til-rest-proxy.jar app.jar
