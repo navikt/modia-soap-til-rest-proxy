@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/internal")
 public class InternalController {
-    @Autowired
+    @Autowired(required = false)
     private List<? extends SelfTestCheck> injectChecks;
 
     private final List<SelfTestCheck> selftestChecks;
@@ -26,7 +26,9 @@ public class InternalController {
         this.selftestChecks = new ArrayList<>();
         this.selftestChecks.add(DiskCheck.asSelftestCheck());
         this.selftestChecks.add(TruststoreCheck.asSelftestCheck());
-        this.selftestChecks.addAll(injectChecks);
+        if (injectChecks != null) {
+            this.selftestChecks.addAll(injectChecks);
+        }
     }
 
     @GetMapping("/isReady")
