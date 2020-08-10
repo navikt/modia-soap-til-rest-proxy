@@ -43,6 +43,11 @@
             <artifactId>henvendelse-arkivering-informasjon</artifactId>
             <version>${tjenestespesifikasjoner.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-spring-boot-starter-jaxws</artifactId>
+            <version>3.3.7</version>
+        </dependency>
 
         <!-- common-java-modules -->
         <dependency>
@@ -72,9 +77,19 @@
         </dependency>
         <dependency>
             <groupId>no.nav.common</groupId>
+            <artifactId>types</artifactId>
+            <version>${common.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.common</groupId>
             <artifactId>test</artifactId>
             <version>${common.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.xml.ws</groupId>
+            <artifactId>jakarta.xml.ws-api</artifactId>
+            <version>2.3.3</version>
         </dependency>
 
         <!-- spring-boot -->
