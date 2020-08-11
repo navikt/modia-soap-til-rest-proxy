@@ -41,25 +41,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        namespace: [q0, q6]
-    steps:
-      - uses: actions/checkout@v1
-      - uses: nais/deploy/actions/deploy@v1
-        env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          PRINT_PAYLOAD: true
-          CLUSTER: dev-fss
-          RESOURCE: .nais/qa-template.yaml
-          VAR: namespace=${{matrix.namespace}}
-
-  deploy-q1:
-    name: Deploy to preprod
-    needs: build
-    if: github.ref == 'refs/heads/common-v2'
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        namespace: [q1]
+        namespace: [q0, q1, q6]
     steps:
       - uses: actions/checkout@v1
       - uses: nais/deploy/actions/deploy@v1
