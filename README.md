@@ -5,7 +5,7 @@ Dette er et mellomsteg for å sørge for at overgangen til rest blir så smooth 
 
 ### Lokal kjøring
 
-Appen startes med MainTest-klassen, og denne forventer å finne en fasit.properties-fil med minimum følgende innhold
+Appen startes med no.nav.sbl.dialogarena.modiasoaprest.MainTest-klassen, og denne forventer å finne en fasit.properties-fil med minimum følgende innhold
 ```
 domenebrukernavn=<dinNavIdent>
 domenepassord=<dittNavPassord>

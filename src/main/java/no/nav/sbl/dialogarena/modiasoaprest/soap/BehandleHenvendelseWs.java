@@ -1,6 +1,5 @@
 package no.nav.sbl.dialogarena.modiasoaprest.soap;
 
-import no.nav.apiapp.soap.SoapTjeneste;
 import no.nav.sbl.dialogarena.modiasoaprest.service.SamlToOidcService;
 import no.nav.tjeneste.domene.brukerdialog.arkiverhenvendelsebehandling.v2.aktivitet.ArkiverHenvendelseBehandlingV2;
 import no.nav.tjeneste.domene.brukerdialog.arkivtjenester.v2.typer.Arkivpost;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-@SoapTjeneste("/ArkiverHenvendelseBehandling_v2")
 public class BehandleHenvendelseWs implements ArkiverHenvendelseBehandlingV2 {
 
     Logger logger = LoggerFactory.getLogger(BehandleHenvendelseWs.class);

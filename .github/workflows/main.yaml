@@ -11,9 +11,11 @@ jobs:
   build:
     name: Test and build
     runs-on: ubuntu-latest
-    if: github.ref != 'refs/heads/dev' && github.ref != 'refs/heads/master'
     steps:
       - uses: actions/checkout@v1
+      - uses: actions/setup-java@v1
+        with:
+          java-version: 11
       - uses: actions/cache@v1
         with:
           path: ~/.m2
@@ -23,32 +25,18 @@ jobs:
       - name: Build using maven
         run: |
           mvn -P ci -B verify
-
-  build-and-push:
-    name: Build and push Docker container
-    if: github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/master'
-    env:
-      TZ: Europe/Oslo
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - uses: actions/cache@v1
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-maven-cache-${{ hashFiles('pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-cache-
       - name: Publish Docker image
+        if: github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/common-v2'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          docker build --tag ${IMAGE} .
           docker login docker.pkg.github.com -u ${GITHUB_REPOSITORY} -p ${GITHUB_TOKEN}
+          docker build --tag ${IMAGE} .
           docker push ${IMAGE}
 
   deploy-qa:
     name: Deploy to preprod
-    needs: build-and-push
+    needs: build
     if: github.ref == 'refs/heads/dev'
     runs-on: ubuntu-latest
     strategy:
@@ -66,7 +54,7 @@ jobs:
 
   deploy-prod:
     name: Deploy to prod
-    needs: build-and-push
+    needs: build
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
