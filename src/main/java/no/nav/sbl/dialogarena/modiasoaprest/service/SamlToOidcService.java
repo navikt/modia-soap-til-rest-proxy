@@ -2,6 +2,7 @@ package no.nav.sbl.dialogarena.modiasoaprest.service;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import no.nav.common.cxf.saml.SamlUtils;
 import org.apache.cxf.message.Message;
 import org.apache.cxf.rt.security.claims.Claim;
 import org.apache.cxf.rt.security.claims.ClaimCollection;
@@ -28,8 +29,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.StringWriter;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +39,6 @@ import static no.nav.sbl.dialogarena.modiasoaprest.common.Constants.*;
 public class SamlToOidcService {
     public static final String EXPIRARY_URI = "exp";
     public static final String ACCESS_TOKEN_URI = "access_token";
-    public static final String CONSUMER_ID_URI = "consumerId";
     public static final String CONSUMER_ID_IKKE_FUNNET = "";
 
     private Map<String, String> tokenCache = new HashMap<>();
@@ -105,16 +103,8 @@ public class SamlToOidcService {
         }
         ClaimCollection claims = samlSecurityContext.getClaims();
 
-        URI consumerId = null;
-        try {
-            consumerId = new URI(CONSUMER_ID_URI);
-        } catch (URISyntaxException e) {
-            logger.error("Syntax-exception på consumerID, skal ikke skje", e);
-            throw new RuntimeException("Syntax-exception på consumerID, skal ikke skje", e);
-        }
-
         for (Claim claim : claims) {
-            if (consumerId.equals(claim.getClaimType())) {
+            if (SamlUtils.CONSUMER_ID.equals(claim.getClaimType())) {
                 return claim.getValues().get(0).toString();
             }
         }

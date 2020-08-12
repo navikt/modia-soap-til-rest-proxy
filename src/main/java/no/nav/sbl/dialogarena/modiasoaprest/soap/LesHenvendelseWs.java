@@ -1,6 +1,5 @@
 package no.nav.sbl.dialogarena.modiasoaprest.soap;
 
-import no.nav.apiapp.soap.SoapTjeneste;
 import no.nav.sbl.dialogarena.modiasoaprest.service.SamlToOidcService;
 import no.nav.tjeneste.domene.brukerdialog.arkiverthenvendelse.v2.informasjon.ArkivertHenvendelseV2;
 import no.nav.tjeneste.domene.brukerdialog.arkivtjenester.v2.typer.Arkivpost;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@SoapTjeneste("/ArkivertHenvendelseV2")
 public class LesHenvendelseWs implements ArkivertHenvendelseV2 {
     private Logger logger = LoggerFactory.getLogger(LesHenvendelseWs.class);
 
@@ -43,7 +41,7 @@ public class LesHenvendelseWs implements ArkivertHenvendelseV2 {
     public List<ArkivpostTemagruppe> hentArkiverteTemagrupper(String aktorId) {
         Message currentMessage = PhaseInterceptorChain.getCurrentMessage();
         String oidcToken = samlToOidcService.konverterSamlTokenTilOIDCToken(currentMessage);
-        
+
         List<ArkivpostTemagruppe> arkivpostTemagruppe = restUtils.hentArkivpostTemagruppeFraRestService(oidcToken, aktorId);
         return arkivpostTemagruppe;
     }
