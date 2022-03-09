@@ -30,3 +30,13 @@ Webservice-tjenestene er eksponert på følgende URL
 6. Bruk disse i kallet til REST.
 
 7. Konverter svar fra REST-tjeneste til fornuftig svar på SOAP-kall.
+
+## Henvendelser
+
+Spørsmål knyttet til koden eller prosjektet kan rettes mot:
+
+[Team Personoversikt](https://github.com/navikt/info-team-personoversikt)
+
+### For NAV-ansatte
+
+Henvendelser kan sendes via Slack i kanalen #team-personoversikt.
